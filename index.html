@@ -3,10 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestión de Cursos</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    
+    <!-- Formulario para agregar Alumno -->
+    <form id="alumnoForm">
+        <h3>Agregar Alumno</h3>
+        <div class="form-group">
+            <label for="nombreAlumno">Nombre:</label>
+            <input type="text" id="nombreAlumno" required>
+        </div>
+        <div class="form-group">
+            <label for="apellidoAlumno">Apellido:</label>
+            <input type="text" id="apellidoAlumno" required>
+        </div>
+        <div class="form-group">
+            <label for="dniAlumno">DNI:</label>
+            <input type="number" id="dniAlumno" required>
+        </div>
+        <div class="form-group">
+            <label for="fechaNacAlumno">Fecha de Nacimiento:</label>
+            <input type="date" id="fechaNacAlumno" required>
+        </div>
+        <div class="form-group">
+            <label for="matriculaAlumno">Matrícula:</label>
+            <input type="text" id="matriculaAlumno" required>
+        </div>
+        <button type="submit">Agregar Alumno</button>
+    </form>
+
+    <!-- Formulario para agregar Profesor -->
+    <form id="profesorForm">
+        <h3>Agregar Profesor</h3>
+        <div class="form-group">
+            <label for="nombreProfesor">Nombre:</label>
+            <input type="text" id="nombreProfesor" required>
+        </div>
+        <div class="form-group">
+            <label for="apellidoProfesor">Apellido:</label>
+            <input type="text" id="apellidoProfesor" required>
+        </div>
+        <div class="form-group">
+            <label for="dniProfesor">DNI:</label>
+            <input type="number" id="dniProfesor" required>
+        </div>
+        <div class="form-group">
+            <label for="fechaNacProfesor">Fecha de Nacimiento:</label>
+            <input type="date" id="fechaNacProfesor" required>
+        </div>
+        <div class="form-group">
+            <label for="especialidadProfesor">Especialidad:</label>
+            <input type="text" id="especialidadProfesor" required>
+        </div>
+        <button type="submit">Agregar Profesor</button>
+    </form>
+
+    <!-- Formulario para agregar Curso -->
+    <form id="cursoForm">
+        <h3>Agregar Curso</h3>
+        <div class="form-group">
+            <label for="nombreCurso">Nombre del Curso:</label>
+            <input type="text" id="nombreCurso" required>
+        </div>
+        <div class="form-group">
+            <label for="fechaInicioCurso">Fecha de Inicio:</label>
+            <input type="date" id="fechaInicioCurso" required>
+        </div>
+        <div class="form-group">
+            <label for="fechaFinCurso">Fecha de Finalización:</label>
+            <input type="date" id="fechaFinCurso" required>
+        </div>
+        <div class="form-group">
+            <label for="categoriaCurso">Categoría del Curso:</label>
+            <select id="categoriaCurso" required>
+                <option value="Programación">Programación</option>
+                <option value="Diseño">Diseño</option>
+            </select>
+        </div>
+        <button type="submit">Agregar Curso</button>
+    </form>
+
     <script type="module" src="assets/js/index.js"></script>
 </body>
 </html>

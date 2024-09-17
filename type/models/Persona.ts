@@ -42,7 +42,27 @@ export class Persona implements IPersona {
     fechaRegistro?: Date;
     activo?: boolean;
 
-    constructor(id: number, nombre: string, apellido: string, fechaNac: Date, dni: number, role: string, email?: string, direccion?: { calle: string; ciudad: string; provincia: string; codigoPostal: string; }, telefono?: string, nacionalidad?: string, estadoCivil?: string, genero?: 'masculino' | 'femenino' | 'otro', fechaRegistro?: Date, activo: boolean = true) {
+    constructor(
+        id: number, 
+        nombre: string, 
+        apellido: string, 
+        fechaNac: Date, 
+        dni: number, 
+        role: string, 
+        email?: string, 
+        direccion?: { 
+            calle: string; 
+            ciudad: string; 
+            provincia: string; 
+            codigoPostal: string; 
+        }, 
+        telefono?: string, 
+        nacionalidad?: string, 
+        estadoCivil?: string, 
+        genero?: 'masculino' | 'femenino' | 'otro', 
+        fechaRegistro?: Date, 
+        activo: boolean = true
+    ) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;

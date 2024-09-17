@@ -1,0 +1,14 @@
+@import 'base/reset';
+
+// Importar variables y mixins
+@import 'base/variables';
+@import 'base/mixins';
+
+// Importar componentes
+@import 'components/header';
+@import 'components/footer';
+
+// Importar Layout
+@import 'layout/main';
+
+// Autor: Alejandro Di Stefano
