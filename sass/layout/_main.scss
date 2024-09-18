@@ -1,4 +1,7 @@
 body {
     font-family: "Roboto", sans-serif;
     padding: 20px;    
+    .data-section{
+        @include flexbox(row, space-evenly, flex-start);
+    }
 }

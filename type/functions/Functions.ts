@@ -70,7 +70,7 @@ export function cargarProfesoresDesdeLS() {
     if(profesoresAlmacenados){
         profesoresAlmacenados.forEach((profesor: Profesor) => {
             const option = document.createElement('option');
-            option.value = JSON.stringify(profesor); 
+            option.value = JSON.stringify(profesor.id); 
             option.text = `${profesor.nombre} ${profesor.apellido}`;
             selectProfesores.appendChild(option);
         });
@@ -96,3 +96,36 @@ export function generarComision(cursosAlmacenados: Curso[]): number {
     const comisionAleatoria = Math.floor(Math.random() * 1000 + 1000) + 1;
     return ultimoCurso ? ultimoCurso.id + comisionAleatoria : comisionAleatoria;
 }
+
+export function listarEnTabla<T extends object>(key: string, containerElement: HTMLElement) {
+    const data: T[] = JSON.parse(localStorage.getItem(key) || '[]');
+
+    if (data.length === 0) {
+        containerElement.innerHTML = `<p>No hay datos disponibles para ${key}.</p>`;
+        return;
+    }
+
+    let table = `<table>
+        <thead>
+            <tr>${Object.keys(data[0]).map(key => `<th>${key}</th>`).join('')}</tr>
+        </thead>
+        <tbody>
+            ${data.map((item: T) => 
+                `<tr>${Object.values(item).map(value => {
+                    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                        return `<td>${(value as any).nombre || 'Objeto sin nombre'}</td>`;
+                    } else if (Array.isArray(value)) {
+                        return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
+                    } else {
+                        return `<td>${value}</td>`;
+                    }
+                }).join('')}</tr>`
+            ).join('')}
+        </tbody>
+    </table>`;
+
+    containerElement.innerHTML = table;
+}
+
+
+

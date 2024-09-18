@@ -18,7 +18,7 @@ export class Profesor extends Persona {
 
     dictarCurso(curso: Curso) {
         this.cursos.push(curso);
-        // curso.asignarProfesor(this); 
+        curso.asignarProfesor(this); 
     }
 
     mostrarDatos(): string {
