@@ -117,7 +117,7 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
             ${data.map((item: T) => 
                 `<tr>${Object.values(item).map(value => {
                     if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                        return `<td>${(value as any).nombre || 'Objeto sin nombre'}</td>`;
+                        return `<td>${(value as any).categoria || 'Objeto sin nombre'}</td>`;
                     } else if (Array.isArray(value)) {
                         return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
                     } else {
