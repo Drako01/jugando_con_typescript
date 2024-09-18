@@ -17,7 +17,7 @@ window.onload = () => {
 cargarProfesoresDesdeLS();
 // Verificación y adición de Alumno
 document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();  
+    e.preventDefault();
 
     const nombre = (document.getElementById('nombreAlumno') as HTMLInputElement).value.trim();
     const apellido = (document.getElementById('apellidoAlumno') as HTMLInputElement).value.trim();
@@ -25,21 +25,21 @@ document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
 
     const alumnosAlmacenados: Alumno[] = JSON.parse(localStorage.getItem("Alumnos") || '[]');
 
-    const alumnoExiste = alumnosAlmacenados.some((alumno: Alumno) => 
-        alumno.nombre.toLowerCase() === nombre.toLowerCase() && 
+    const alumnoExiste = alumnosAlmacenados.some((alumno: Alumno) =>
+        alumno.nombre.toLowerCase() === nombre.toLowerCase() &&
         alumno.apellido.toLowerCase() === apellido.toLowerCase()
     );
 
     if (!alumnoExiste) {
         const nuevoId = alumnosAlmacenados.length + 1;
-        
+
         const fechaNac = new Date((document.getElementById('fechaNacAlumno') as HTMLInputElement).value);
 
-        const matricula = generarMatricula(nombre, apellido, alumnosAlmacenados); 
+        const matricula = generarMatricula(nombre, apellido, alumnosAlmacenados);
         const alumno = new Alumno(nuevoId, nombre, apellido, fechaNac, dni, matricula);
 
         alumnosAlmacenados.push(alumno);
-        
+
         agregarAlLocalStorage("Alumnos", alumno);
 
     } else {
@@ -123,7 +123,7 @@ document.getElementById('cursoForm')?.addEventListener('submit', (e) => {
 
         const curso = new Curso(nuevoId, nombre, fechaInicioFormatted, fechaFinalizacionFormatted, true, 0, categoria);
 
-        profe.dictarCurso(curso);  
+        profe.dictarCurso(curso);
         curso.comision = nuevaComision;
 
         const cursoSinProfesores = {
@@ -132,7 +132,7 @@ document.getElementById('cursoForm')?.addEventListener('submit', (e) => {
                 id: p.id,
                 nombre: p.nombre,
                 apellido: p.apellido
-            })) 
+            }))
         };
 
         cursosAlmacenados.push(cursoSinProfesores);
@@ -142,7 +142,7 @@ document.getElementById('cursoForm')?.addEventListener('submit', (e) => {
             if (p.id === profe.id) {
                 return {
                     ...p,
-                    cursos: [...p.cursos, cursoSinProfesores] 
+                    cursos: [...p.cursos, cursoSinProfesores]
                 };
             }
             return p;
@@ -177,23 +177,25 @@ document.getElementById('categoriaForm')?.addEventListener('submit', (e) => {
     }
 });
 
-const sectionCursos = document.getElementById('data-section__cursos');
-const sectionCategorias = document.getElementById('data-section__categorias');
-const sectionAlumnos = document.getElementById('data-section__profes');
-const sectionProfesores = document.getElementById('data-section__alumnos');
+document.addEventListener('DOMContentLoaded', function () {
+    const sectionCursos = document.getElementById('data-section__cursos');
+    const sectionCategorias = document.getElementById('data-section__categorias');
+    const sectionAlumnos = document.getElementById('data-section__profes');
+    const sectionProfesores = document.getElementById('data-section__alumnos');
 
-if (sectionCursos) {
-    listarEnTabla('Cursos', sectionCursos);
-}
+    if (sectionCursos) {
+        listarEnTabla('Cursos', sectionCursos);
+    }
 
-if (sectionCategorias) {
-    listarEnTabla('Categorias', sectionCategorias);
-}
+    if (sectionCategorias) {
+        listarEnTabla('Categorias', sectionCategorias);
+    }
 
-if (sectionAlumnos) {
-    listarEnTabla('Alumnos', sectionAlumnos);
-}
+    if (sectionAlumnos) {
+        listarEnTabla('Alumnos', sectionAlumnos);
+    }
 
-if (sectionProfesores) {
-    listarEnTabla('Profesores', sectionProfesores);
-}
+    if (sectionProfesores) {
+        listarEnTabla('Profesores', sectionProfesores);
+    }
+});
