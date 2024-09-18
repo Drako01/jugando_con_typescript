@@ -2,9 +2,14 @@
     @include flexbox(row, space-evenly, flex-start);
     flex-wrap: wrap;
     gap: 2rem;
+    width: calc(80vw - 10rem);
+    margin: 0 auto;
+    margin-bottom: 3rem;
     form {       
-        @include flexbox(column, center, stretch);
+        @include flexbox(column, space-between, stretch);
         width: 410px;
+        height: 540px;
+        margin: 1rem;
         .form-group {
             width: 400px;
             margin-bottom: 10px;

@@ -109,7 +109,9 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
         return;
     }
 
-    let table = `<table class="table table-striped table-bordered">
+    let table = `
+    <h2>Tabla de ${key}</h2>
+    <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>${Object.keys(data[0]).map(key => `<th scope="col">${key}</th>`).join('')}</tr>
         </thead>
