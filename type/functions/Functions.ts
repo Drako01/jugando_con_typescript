@@ -119,9 +119,23 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
             ${data.map((item: T) => 
                 `<tr>${Object.values(item).map(value => {
                     if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                        return `<td>${(value as any).categoria}</td>`;
+                        // Si es un objeto Curso, mostrar solo la comisión
+                        if (value.hasOwnProperty('comision')) {
+                            return `<td>${(value as Curso).comision}</td>`;
+                        } 
+                        return `<td>${(value as any).categoria || ''}</td>`;
                     } else if (Array.isArray(value)) {
-                        return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
+                        // Si es un array, determinar si es de Profesores/Alumnos (mostrar nombre/apellido) o Cursos (mostrar comisión)
+                        if (value.length > 0 && typeof value[0] === 'object') {
+                            if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
+                                // Si es un array de personas (con nombre y apellido)
+                                return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
+                            } else if (value[0].hasOwnProperty('comision')) {
+                                // Si es un array de cursos, mostrar solo las comisiones
+                                return `<td>${value.map(v => v.comision).join(', ')}</td>`;
+                            }
+                        }
+                        return `<td>${value}</td>`;
                     } else {
                         return `<td>${value}</td>`;
                     }
@@ -130,9 +144,9 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
         </tbody>
     </table>`;
 
-
     containerElement.innerHTML = table;
 }
+
 
 
 
