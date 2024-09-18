@@ -2,6 +2,14 @@ body {
     font-family: "Roboto", sans-serif;
     padding: 20px;    
     .data-section{
-        @include flexbox(row, space-evenly, flex-start);
+        @include flexbox(column, space-evenly, flex-start);
+        
+        width: calc(100vw - 10rem);
+        gap: 4rem;
+        margin: 0 auto;
+        margin-top: 3rem;
+        article{
+            width: 100%;
+        }
     }
 }

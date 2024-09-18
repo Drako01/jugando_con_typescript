@@ -17,24 +17,29 @@ window.onload = () => {
 cargarProfesoresDesdeLS();
 // Verificación y adición de Alumno
 document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();  
 
     const nombre = (document.getElementById('nombreAlumno') as HTMLInputElement).value.trim();
     const apellido = (document.getElementById('apellidoAlumno') as HTMLInputElement).value.trim();
     const dni = parseInt((document.getElementById('dniAlumno') as HTMLInputElement).value);
 
-    const alumnosAlmacenados = JSON.parse(localStorage.getItem("Alumnos") || '[]');
+    const alumnosAlmacenados: Alumno[] = JSON.parse(localStorage.getItem("Alumnos") || '[]');
 
-    // Verificar si ya existe un alumno con el mismo nombre y apellido
-    const alumnoExiste = alumnosAlmacenados.some((alumno: Alumno) => alumno.nombre.toLowerCase() === nombre.toLowerCase() && alumno.apellido.toLowerCase() === apellido.toLowerCase());
+    const alumnoExiste = alumnosAlmacenados.some((alumno: Alumno) => 
+        alumno.nombre.toLowerCase() === nombre.toLowerCase() && 
+        alumno.apellido.toLowerCase() === apellido.toLowerCase()
+    );
 
     if (!alumnoExiste) {
         const nuevoId = alumnosAlmacenados.length + 1;
+        
         const fechaNac = new Date((document.getElementById('fechaNacAlumno') as HTMLInputElement).value);
-        const matricula = generarMatricula(nombre, apellido, alumnosAlmacenados); // Asignar una matrícula única
+
+        const matricula = generarMatricula(nombre, apellido, alumnosAlmacenados); 
         const alumno = new Alumno(nuevoId, nombre, apellido, fechaNac, dni, matricula);
 
         alumnosAlmacenados.push(alumno);
-        localStorage.setItem("Alumnos", JSON.stringify(alumnosAlmacenados));
+        
         agregarAlLocalStorage("Alumnos", alumno);
 
     } else {
@@ -113,7 +118,10 @@ document.getElementById('cursoForm')?.addEventListener('submit', (e) => {
         const nuevoId = cursosAlmacenados.length + 1;
         const nuevaComision = generarComision(cursosAlmacenados);
 
-        const curso = new Curso(nuevoId, nombre, fechaInicio, fechaFinalizacion, true, 0, categoria);
+        const fechaInicioFormatted = fechaInicio.toISOString().split('T')[0];
+        const fechaFinalizacionFormatted = fechaFinalizacion.toISOString().split('T')[0];
+
+        const curso = new Curso(nuevoId, nombre, fechaInicioFormatted, fechaFinalizacionFormatted, true, 0, categoria);
 
         profe.dictarCurso(curso);  
         curso.comision = nuevaComision;

@@ -6,7 +6,7 @@ import { Alumno } from "../models/Alumno";
 export function agregarAlLocalStorage(key: string, value: any) {
     const existingData = localStorage.getItem(key);
 
-    let dataArray = JSON.parse(localStorage.getItem(key) || '[]');
+    let dataArray = JSON.parse(existingData || '[]');
     try {
         dataArray = existingData ? JSON.parse(existingData) : [];
     } catch (e) {
@@ -20,10 +20,14 @@ export function agregarAlLocalStorage(key: string, value: any) {
 
     const valorExiste = dataArray.some((item: any) => item.nombre === value.nombre);
 
-    
     if (!valorExiste) {
-        // Agregar solo el nuevo valor
-        dataArray.push(value);
+        const formattedValue = {
+            ...value,
+            fechaNac: value.fechaNac instanceof Date ? value.fechaNac.toISOString().split('T')[0] : value.fechaNac,
+            fechaRegistro: value.fechaRegistro instanceof Date ? value.fechaRegistro.toISOString().split('T')[0] : value.fechaRegistro
+        };
+
+        dataArray.push(formattedValue);
         localStorage.setItem(key, JSON.stringify(dataArray));
     } else {
         console.log(`El elemento con el nombre "${value.nombre}" ya existe y no será agregado.`);
@@ -105,9 +109,9 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
         return;
     }
 
-    let table = `<table>
-        <thead>
-            <tr>${Object.keys(data[0]).map(key => `<th>${key}</th>`).join('')}</tr>
+    let table = `<table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>${Object.keys(data[0]).map(key => `<th scope="col">${key}</th>`).join('')}</tr>
         </thead>
         <tbody>
             ${data.map((item: T) => 
@@ -123,6 +127,7 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
             ).join('')}
         </tbody>
     </table>`;
+
 
     containerElement.innerHTML = table;
 }
