@@ -4,10 +4,9 @@ body {
     .data-section{
         @include flexbox(column, space-evenly, flex-start);
         
-        width: calc(100vw - 10rem);
+        width: calc(80vw - 10rem);
         gap: 4rem;
-        margin: 0 auto;
-        margin-top: 3rem;
+        margin: 3rem auto;
         article{
             width: 100%;
         }
