@@ -59,8 +59,7 @@ document.getElementById('profesorForm')?.addEventListener('submit', (e) => {
         const profesor = new Profesor(nuevoId, nombre, apellido, fechaNac, dni);
 
         profesoresAlmacenados.push(profesor);
-        localStorage.setItem("Profesores", JSON.stringify(profesoresAlmacenados));
-
+        agregarAlLocalStorage('Profesores', profesor);
         
     } else {
         console.log(`El profesor ${nombre} ${apellido} ya existe.`);
