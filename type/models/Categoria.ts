@@ -9,4 +9,8 @@ export class Categoria {
         this.id = id;
         this.categoria = categoria;
     }
+
+    mostrarDetalles(): string {
+        return `Categoria: ${this.categoria} Agregada con éxito.!`;
+    }
 }

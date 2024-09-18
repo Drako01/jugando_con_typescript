@@ -2,7 +2,6 @@ import { Persona } from './Persona.js';
 import { Curso } from './Curso.js';
 
 export class Profesor extends Persona {
-    especialidad: string;
     cursos: Curso[];
 
     constructor(
@@ -11,20 +10,18 @@ export class Profesor extends Persona {
         apellido: string, 
         fechaNac: Date, 
         dni: number, 
-        especialidad: string, 
         email?: string
     ) {
-        super(id, nombre, apellido, fechaNac, dni, 'Profesor', email);
-        this.especialidad = especialidad;
+        super(id, nombre, apellido, fechaNac, dni, 'Profesor', email);        
         this.cursos = [];
     }
 
     dictarCurso(curso: Curso) {
         this.cursos.push(curso);
-        curso.asignarProfesor(this); 
+        // curso.asignarProfesor(this); 
     }
 
     mostrarDatos(): string {
-        return `Profesor: ${this.nombre} ${this.apellido}, Especialidad: ${this.especialidad}, Edad: ${this.calcularEdad()}`;
+        return `Profesor: ${this.nombre} ${this.apellido}, Edad: ${this.calcularEdad()}`;
     }
 }

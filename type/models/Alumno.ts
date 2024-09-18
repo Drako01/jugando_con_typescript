@@ -11,7 +11,7 @@ export class Alumno extends Persona {
         apellido: string,
         fechaNac: Date,
         dni: number,
-        matricula: string,
+        matricula: any,
         email?: string
     ) {
         super(id, nombre, apellido, fechaNac, dni, "Alumno", email);

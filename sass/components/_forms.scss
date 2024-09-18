@@ -1,30 +1,39 @@
-form {
-    margin-bottom: 20px;
+.form-section {
+    @include flexbox(row, space-evenly, flex-start);
+    flex-wrap: wrap;
+    gap: 2rem;
+    form {       
+        @include flexbox(column, center, stretch);
+        width: 410px;
+        .form-group {
+            width: 400px;
+            margin-bottom: 10px;
+            
+            label {
+                display: block;
+                margin-bottom: 5px;
+                width: 100%;
+                padding: 2px 5px;
+            }
 
-    .form-group {
-        margin-bottom: 10px;
-
-        label {
-            display: block;
-            margin-bottom: 5px;
+            input,
+            select {
+                padding: 5px;
+                width: 100%;
+            }
         }
 
-        input, select {
-            padding: 5px;
-            width: 100%;
-            max-width: 300px;
-        }
-    }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 1rem 0;
 
-    button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #0056b3;
+            &:hover {
+                background-color: #0056b3;
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ export class Curso {
     categoria?: Categoria;
     alumnos: Alumno[];  
     profesores: Profesor[];
+    comision?: any;
 
     constructor(
         id: number,
@@ -20,7 +21,9 @@ export class Curso {
         fechaFinalizacion: Date,
         activo: boolean = true,
         cantidadAlumnos: number = 0,
-        categoria?: Categoria
+        categoria?: Categoria,
+        profesor?: Profesor,
+        comision?: any
     ) {
         this.id = id;
         this.nombre = nombre;
@@ -30,7 +33,8 @@ export class Curso {
         this.cantidadAlumnos = cantidadAlumnos;
         this.categoria = categoria;
         this.alumnos = []; 
-        this.profesores = []; 
+        this.profesores = profesor ? [profesor] : [];
+        this.comision = comision;
     }
     agregarAlumno(alumno: Alumno) {
         this.alumnos.push(alumno);
