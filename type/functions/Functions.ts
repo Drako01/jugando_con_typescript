@@ -39,11 +39,11 @@ export function cargarCategoriasDesdeLS() {
     const selectCategorias = document.getElementById('categoriaCurso') as HTMLSelectElement;
 
     selectCategorias.innerHTML = '';
-    if(categoriasAlmacenadas){
+    if (categoriasAlmacenadas) {
         categoriasAlmacenadas.forEach((categoria: Categoria) => {
             const option = document.createElement('option');
             option.value = categoria.categoria;
-            option.text = categoria.categoria; 
+            option.text = categoria.categoria;
             selectCategorias.appendChild(option);
         });
     }
@@ -54,12 +54,12 @@ export function cargarCursosDesdeLS() {
     const selectCursos = document.getElementById('cursosProfesor') as HTMLSelectElement;
 
     selectCursos.innerHTML = '<option value="">--Selecciona una Categoria--</option>';
-    if(cursosAlmacenados){
+    if (cursosAlmacenados) {
         cursosAlmacenados.forEach((curso: Curso) => {
             console.log(curso);
             const option = document.createElement('option');
             option.value = curso.nombre;
-            option.text = curso.nombre; 
+            option.text = curso.nombre;
             selectCursos.appendChild(option);
         });
     }
@@ -70,11 +70,11 @@ export function cargarProfesoresDesdeLS() {
     const selectProfesores = document.getElementById('profesorCurso') as HTMLSelectElement;
 
     selectProfesores.innerHTML = '<option value="">--Selecciona un Profesor--</option>';
-    
-    if(profesoresAlmacenados){
+
+    if (profesoresAlmacenados) {
         profesoresAlmacenados.forEach((profesor: Profesor) => {
             const option = document.createElement('option');
-            option.value = JSON.stringify(profesor.id); 
+            option.value = JSON.stringify(profesor.id);
             option.text = `${profesor.nombre} ${profesor.apellido}`;
             selectProfesores.appendChild(option);
         });
@@ -87,7 +87,7 @@ export function generarMatricula(nombre: string, apellido: string, alumnosAlmace
     let matriculaExiste;
 
     do {
-        const numeroAleatorio = ('000' + Math.floor(Math.random() * 100 + 1)).slice(-3); 
+        const numeroAleatorio = ('000' + Math.floor(Math.random() * 100 + 1)).slice(-3);
         matricula = `${iniciales}${numeroAleatorio}`;
         matriculaExiste = alumnosAlmacenados.some((alumno: Alumno) => alumno.matricula === matricula);
     } while (matriculaExiste);
@@ -116,31 +116,34 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
             <tr>${Object.keys(data[0]).map(key => `<th scope="col">${key}</th>`).join('')}</tr>
         </thead>
         <tbody>
-            ${data.map((item: T) => 
-                `<tr>${Object.values(item).map(value => {
-                    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                        // Si es un objeto Curso, mostrar solo la comisión
-                        if (value.hasOwnProperty('comision')) {
-                            return `<td>${(value as Curso).comision}</td>`;
-                        } 
-                        return `<td>${(value as any).categoria || ''}</td>`;
-                    } else if (Array.isArray(value)) {
-                        // Si es un array, determinar si es de Profesores/Alumnos (mostrar nombre/apellido) o Cursos (mostrar comisión)
-                        if (value.length > 0 && typeof value[0] === 'object') {
-                            if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
-                                // Si es un array de personas (con nombre y apellido)
-                                return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
-                            } else if (value[0].hasOwnProperty('comision')) {
-                                // Si es un array de cursos, mostrar solo las comisiones
-                                return `<td>${value.map(v => v.comision).join(', ')}</td>`;
-                            }
-                        }
-                        return `<td>${value}</td>`;
-                    } else {
-                        return `<td>${value}</td>`;
+            ${data.map((item: T) =>
+        `<tr>${Object.values(item).map(value => {
+            if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                // Si es un objeto Curso, mostrar solo la comisión
+                if (value.hasOwnProperty('comision')) {
+                    return `<td>${(value as Curso).comision}</td>`;
+                }
+                return `<td>${(value as any).categoria || ''}</td>`;
+            } else if (Array.isArray(value)) {
+                // Si es un array, determinar si es de Profesores/Alumnos (mostrar nombre/apellido) o Cursos (mostrar comisión)
+                if (value.length > 0 && typeof value[0] === 'object') {
+                    if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
+                        // Si es un array de personas (con nombre y apellido)
+                        return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
+                    } else if (value[0].hasOwnProperty('comision')) {
+                        // Si es un array de cursos, mostrar solo las comisiones
+                        return `<td>${value.map(v => v.comision).join(', ')}</td>`;
                     }
-                }).join('')}</tr>`
-            ).join('')}
+                }
+                return `<td>${value}</td>`;
+            } else if (typeof value === 'boolean') {
+                // Aquí se muestra "Activo" para true e "Inactivo" para false
+                return `<td>${value ? 'Activo' : 'Inactivo'}</td>`;
+            } else {
+                return `<td>${value}</td>`;
+            }
+        }).join('')}</tr>`
+    ).join('')}
         </tbody>
     </table>`;
 

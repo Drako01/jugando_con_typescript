@@ -17,7 +17,7 @@ interface IPersona {
     estadoCivil?: string;
     genero?: 'masculino' | 'femenino' | 'otro';
     fechaRegistro?: Date;
-    activo?: boolean;
+    estado?: boolean;
 }
 
 
@@ -40,7 +40,7 @@ export class Persona implements IPersona {
     estadoCivil?: string;
     genero?: 'masculino' | 'femenino' | 'otro';
     fechaRegistro?: Date;
-    activo?: boolean;
+    estado?: boolean;
 
     constructor(
         id: number, 
@@ -61,7 +61,7 @@ export class Persona implements IPersona {
         estadoCivil?: string, 
         genero?: 'masculino' | 'femenino' | 'otro', 
         fechaRegistro?: Date, 
-        activo: boolean = true
+        estado: boolean = true
     ) {
         this.id = id;
         this.nombre = nombre;
@@ -76,7 +76,7 @@ export class Persona implements IPersona {
         this.estadoCivil = estadoCivil;
         this.genero = genero;
         this.fechaRegistro = fechaRegistro || new Date();  
-        this.activo = activo;
+        this.estado = estado;
     }
 
     calcularEdad(): number {

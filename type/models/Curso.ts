@@ -7,7 +7,7 @@ export class Curso {
     nombre: string;
     fechaInicio: string;
     fechaFinalizacion: string;
-    activo?: boolean;
+    estado?: boolean;
     cantidadAlumnos?: number;
     categoria?: Categoria;
     alumnos: Alumno[];  
@@ -19,7 +19,7 @@ export class Curso {
         nombre: string,
         fechaInicio: string,
         fechaFinalizacion: string,
-        activo: boolean = true,
+        estado: boolean = true,
         cantidadAlumnos: number = 0,
         categoria?: Categoria,
         profesor?: Profesor,
@@ -29,7 +29,7 @@ export class Curso {
         this.nombre = nombre;
         this.fechaInicio = fechaInicio;
         this.fechaFinalizacion = fechaFinalizacion;
-        this.activo = activo;
+        this.estado = estado;
         this.cantidadAlumnos = cantidadAlumnos;
         this.categoria = categoria;
         this.alumnos = []; 
