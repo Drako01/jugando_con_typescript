@@ -37,7 +37,7 @@ document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
         const fechaNac = new Date((document.getElementById('fechaNacAlumno') as HTMLInputElement).value);
 
         const matricula = generarMatricula(nombre, apellido, alumnosAlmacenados);
-        const alumno = new Alumno(nuevoId, nombre, apellido, fechaNac, dni, email, matricula);
+        const alumno = new Alumno(nuevoId, nombre, apellido, fechaNac, dni, matricula, email);
 
         alumnosAlmacenados.push(alumno);
 

@@ -7,9 +7,12 @@
     margin-bottom: 3rem;
     form {       
         @include flexbox(column, space-between, stretch);
-        width: 410px;
-        height: 540px;
+        width: 460px;
+        height: 730px;
         margin: 1rem;
+        border: 1px solid black;
+        border-radius: 1rem;
+        padding: 2rem;
         .form-group {
             width: 400px;
             margin-bottom: 10px;
