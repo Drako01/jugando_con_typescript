@@ -22,6 +22,7 @@ document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
     const nombre = (document.getElementById('nombreAlumno') as HTMLInputElement).value.trim();
     const apellido = (document.getElementById('apellidoAlumno') as HTMLInputElement).value.trim();
     const dni = parseInt((document.getElementById('dniAlumno') as HTMLInputElement).value);
+    const email = (document.getElementById('emailAlumno') as HTMLInputElement).value.trim();
 
     const alumnosAlmacenados: Alumno[] = JSON.parse(localStorage.getItem("Alumnos") || '[]');
 
@@ -36,7 +37,7 @@ document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
         const fechaNac = new Date((document.getElementById('fechaNacAlumno') as HTMLInputElement).value);
 
         const matricula = generarMatricula(nombre, apellido, alumnosAlmacenados);
-        const alumno = new Alumno(nuevoId, nombre, apellido, fechaNac, dni, matricula);
+        const alumno = new Alumno(nuevoId, nombre, apellido, fechaNac, dni, email, matricula);
 
         alumnosAlmacenados.push(alumno);
 
@@ -54,6 +55,7 @@ document.getElementById('profesorForm')?.addEventListener('submit', (e) => {
     const apellido = (document.getElementById('apellidoProfesor') as HTMLInputElement).value;
     const dni = parseInt((document.getElementById('dniProfesor') as HTMLInputElement).value);
     const fechaNac = new Date((document.getElementById('fechaNacProfesor') as HTMLInputElement).value);
+    const email = (document.getElementById('emailProfesor') as HTMLInputElement).value.trim();
 
     const profesoresAlmacenados = JSON.parse(localStorage.getItem("Profesores") || '[]');
 
@@ -62,7 +64,7 @@ document.getElementById('profesorForm')?.addEventListener('submit', (e) => {
     if (!profesorExiste) {
         const nuevoId = profesoresAlmacenados.length + 1;
 
-        const profesor = new Profesor(nuevoId, nombre, apellido, fechaNac, dni);
+        const profesor = new Profesor(nuevoId, nombre, apellido, fechaNac, dni, email);
 
         profesoresAlmacenados.push(profesor);
         agregarAlLocalStorage('Profesores', profesor);

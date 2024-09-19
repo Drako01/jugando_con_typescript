@@ -5,11 +5,12 @@
 @import 'base/mixins';
 
 // Importar componentes
-@import 'components/header';
 @import 'components/forms';
-@import 'components/footer';
+@import 'components/tables';
 
 // Importar Layout
+@import 'layout/header';
 @import 'layout/main';
+@import 'layout/footer';
 
 // Autor: Alejandro Di Stefano

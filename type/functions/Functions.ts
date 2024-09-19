@@ -72,7 +72,9 @@ export function cargarProfesoresDesdeLS() {
     selectProfesores.innerHTML = '<option value="">--Selecciona un Profesor--</option>';
 
     if (profesoresAlmacenados) {
-        profesoresAlmacenados.forEach((profesor: Profesor) => {
+        const profesoresActivos = profesoresAlmacenados.filter((profesor: Profesor) => profesor.estado === true);
+
+        profesoresActivos.forEach((profesor: Profesor) => {
             const option = document.createElement('option');
             option.value = JSON.stringify(profesor.id);
             option.text = `${profesor.nombre} ${profesor.apellido}`;
@@ -113,11 +115,11 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
     <h2>Tabla de ${key}</h2>
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
-            <tr>${Object.keys(data[0]).map(key => `<th scope="col">${key}</th>`).join('')}</tr>
+            <tr class='table-tittle'>${Object.keys(data[0]).map(key => `<th scope="col">${key.toUpperCase()}</th>`).join('')}</tr>
         </thead>
         <tbody>
             ${data.map((item: T, index) => 
-                `<tr>${Object.values(item).map((value, valueIndex) => {
+                `<tr>${Object.entries(item).map(([keyName, value], valueIndex) => {
                     if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
                         if (value.hasOwnProperty('comision')) {
                             return `<td>${(value as Curso).comision}</td>`;
@@ -133,14 +135,20 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
                         }
                         return `<td>${value}</td>`;
                     } else if (typeof value === 'boolean') {
-                        return `<td> <input type="checkbox" ${value ? 'checked' : ''} 
-                                    onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, 
-                                    this.checked, document.getElementById('${containerElement.id}'))"> 
-                            ${value ? 'Activo' : 'Inactivo'}
-                            
-                        </td>`;
+                        return `<td> 
+                                    <input type="checkbox" ${value ? 'checked' : ''} 
+                                        onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, 
+                                        this.checked, document.getElementById('${containerElement.id}'))"> 
+                                    <span style="color: ${value ? 'green' : 'red'};">
+                                        ${value ? 'Activo' : 'Inactivo'}
+                                    </span>
+                                </td>`;
+                    
                     } else {
-                        return `<td>${value}</td>`;
+                        // Condición para aplicar la clase "td-categoria" solo a las tablas de Categorias
+                        return key === 'Categorias' && keyName === 'categoria' 
+                            ? `<td class='td-categoria'>${value}</td>`
+                            : `<td>${value}</td>`;
                     }
                 }).join('')}</tr>`
             ).join('')}
