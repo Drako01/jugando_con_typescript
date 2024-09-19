@@ -8,11 +8,11 @@ export class Profesor extends Persona {
         id: number, 
         nombre: string, 
         apellido: string, 
-        fechaNac: Date, 
+        nacimiento: Date, 
         dni: number, 
         email?: string
     ) {
-        super(id, nombre, apellido, fechaNac, dni, 'Profesor', email);        
+        super(id, nombre, apellido, nacimiento, dni, 'Profesor', email);        
         this.cursos = [];
     }
 

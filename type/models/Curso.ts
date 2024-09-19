@@ -5,8 +5,8 @@ import { Profesor } from './Profesor.js';
 export class Curso {
     id: number;
     nombre: string;
-    fechaInicio: string;
-    fechaFinalizacion: string;
+    inicio: string;
+    finalizacion: string;
     estado?: boolean;
     cantidadAlumnos?: number;
     categoria?: Categoria;
@@ -17,8 +17,8 @@ export class Curso {
     constructor(
         id: number,
         nombre: string,
-        fechaInicio: string,
-        fechaFinalizacion: string,
+        inicio: string,
+        finalizacion: string,
         estado: boolean = true,
         cantidadAlumnos: number = 0,
         categoria?: Categoria,
@@ -27,8 +27,8 @@ export class Curso {
     ) {
         this.id = id;
         this.nombre = nombre;
-        this.fechaInicio = fechaInicio;
-        this.fechaFinalizacion = fechaFinalizacion;
+        this.inicio = inicio;
+        this.finalizacion = finalizacion;
         this.estado = estado;
         this.cantidadAlumnos = cantidadAlumnos;
         this.categoria = categoria;

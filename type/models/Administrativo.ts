@@ -7,12 +7,12 @@ export class Administrativo extends Persona {
         id: number, 
         nombre: string, 
         apellido: string, 
-        fechaNac: Date, 
+        nacimiento: Date, 
         dni: number, 
         area: string, 
         email?: string
     ) {
-        super(id, nombre, apellido, fechaNac, dni, 'Administrativo', email);
+        super(id, nombre, apellido, nacimiento, dni, 'Administrativo', email);
         this.area = area;
     }
 

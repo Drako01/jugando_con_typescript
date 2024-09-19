@@ -23,8 +23,8 @@ export function agregarAlLocalStorage(key: string, value: any) {
     if (!valorExiste) {
         const formattedValue = {
             ...value,
-            fechaNac: value.fechaNac instanceof Date ? value.fechaNac.toISOString().split('T')[0] : value.fechaNac,
-            fechaRegistro: value.fechaRegistro instanceof Date ? value.fechaRegistro.toISOString().split('T')[0] : value.fechaRegistro
+            nacimiento: value.nacimiento instanceof Date ? value.nacimiento.toISOString().split('T')[0] : value.nacimiento,
+            registro: value.registro instanceof Date ? value.registro.toISOString().split('T')[0] : value.registro
         };
 
         dataArray.push(formattedValue);

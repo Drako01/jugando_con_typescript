@@ -9,12 +9,12 @@ export class Alumno extends Persona {
         id: number,
         nombre: string,
         apellido: string,
-        fechaNac: Date,
+        nacimiento: Date,
         dni: number,
         matricula: any,
         email?: string
     ) {
-        super(id, nombre, apellido, fechaNac, dni, "Alumno", email);
+        super(id, nombre, apellido, nacimiento, dni, "Alumno", email);
         this.matricula = matricula;
         this.cursos = [];
     }

@@ -2,7 +2,7 @@ interface IPersona {
     id: number;
     nombre: string;
     apellido: string;
-    fechaNac: Date;
+    nacimiento: Date;
     email?: string;
     dni: number;
     role: string;
@@ -16,7 +16,7 @@ interface IPersona {
     nacionalidad?: string;
     estadoCivil?: string;
     genero?: 'masculino' | 'femenino' | 'otro';
-    fechaRegistro?: Date;
+    registro?: Date;
     estado?: boolean;
 }
 
@@ -25,7 +25,7 @@ export class Persona implements IPersona {
     id: number;
     nombre: string;
     apellido: string;
-    fechaNac: Date;
+    nacimiento: Date;
     email?: string;
     dni: number;
     role: string;
@@ -39,14 +39,14 @@ export class Persona implements IPersona {
     nacionalidad?: string;
     estadoCivil?: string;
     genero?: 'masculino' | 'femenino' | 'otro';
-    fechaRegistro?: Date;
+    registro?: Date;
     estado?: boolean;
 
     constructor(
         id: number, 
         nombre: string, 
         apellido: string, 
-        fechaNac: Date, 
+        nacimiento: Date, 
         dni: number, 
         role: string, 
         email?: string, 
@@ -60,13 +60,13 @@ export class Persona implements IPersona {
         nacionalidad?: string, 
         estadoCivil?: string, 
         genero?: 'masculino' | 'femenino' | 'otro', 
-        fechaRegistro?: Date, 
+        registro?: Date, 
         estado: boolean = false
     ) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.fechaNac = fechaNac;
+        this.nacimiento = nacimiento;
         this.dni = dni;
         this.role = role;
         this.email = email;
@@ -75,16 +75,16 @@ export class Persona implements IPersona {
         this.nacionalidad = nacionalidad;
         this.estadoCivil = estadoCivil;
         this.genero = genero;
-        this.fechaRegistro = fechaRegistro || new Date();  
+        this.registro = registro || new Date();  
         this.estado = estado;
     }
 
     calcularEdad(): number {
         const hoy = new Date();
-        let edad = hoy.getFullYear() - this.fechaNac.getFullYear();
-        const mes = hoy.getMonth() - this.fechaNac.getMonth();
+        let edad = hoy.getFullYear() - this.nacimiento.getFullYear();
+        const mes = hoy.getMonth() - this.nacimiento.getMonth();
 
-        if (mes < 0 || (mes === 0 && hoy.getDate() < this.fechaNac.getDate())) {
+        if (mes < 0 || (mes === 0 && hoy.getDate() < this.nacimiento.getDate())) {
             edad--;
         }
 
