@@ -61,7 +61,7 @@ export class Persona implements IPersona {
         estadoCivil?: string, 
         genero?: 'masculino' | 'femenino' | 'otro', 
         fechaRegistro?: Date, 
-        estado: boolean = true
+        estado: boolean = false
     ) {
         this.id = id;
         this.nombre = nombre;

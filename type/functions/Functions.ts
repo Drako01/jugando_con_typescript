@@ -116,40 +116,52 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
             <tr>${Object.keys(data[0]).map(key => `<th scope="col">${key}</th>`).join('')}</tr>
         </thead>
         <tbody>
-            ${data.map((item: T) =>
-        `<tr>${Object.values(item).map(value => {
-            if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                // Si es un objeto Curso, mostrar solo la comisión
-                if (value.hasOwnProperty('comision')) {
-                    return `<td>${(value as Curso).comision}</td>`;
-                }
-                return `<td>${(value as any).categoria || ''}</td>`;
-            } else if (Array.isArray(value)) {
-                // Si es un array, determinar si es de Profesores/Alumnos (mostrar nombre/apellido) o Cursos (mostrar comisión)
-                if (value.length > 0 && typeof value[0] === 'object') {
-                    if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
-                        // Si es un array de personas (con nombre y apellido)
-                        return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
-                    } else if (value[0].hasOwnProperty('comision')) {
-                        // Si es un array de cursos, mostrar solo las comisiones
-                        return `<td>${value.map(v => v.comision).join(', ')}</td>`;
+            ${data.map((item: T, index) => 
+                `<tr>${Object.values(item).map((value, valueIndex) => {
+                    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                        if (value.hasOwnProperty('comision')) {
+                            return `<td>${(value as Curso).comision}</td>`;
+                        }
+                        return `<td>${(value as any).categoria || ''}</td>`;
+                    } else if (Array.isArray(value)) {
+                        if (value.length > 0 && typeof value[0] === 'object') {
+                            if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
+                                return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
+                            } else if (value[0].hasOwnProperty('comision')) {
+                                return `<td>${value.map(v => v.comision).join(', ')}</td>`;
+                            }
+                        }
+                        return `<td>${value}</td>`;
+                    } else if (typeof value === 'boolean') {
+                        return `<td> <input type="checkbox" ${value ? 'checked' : ''} 
+                                    onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, 
+                                    this.checked, document.getElementById('${containerElement.id}'))"> 
+                            ${value ? 'Activo' : 'Inactivo'}
+                            
+                        </td>`;
+                    } else {
+                        return `<td>${value}</td>`;
                     }
-                }
-                return `<td>${value}</td>`;
-            } else if (typeof value === 'boolean') {
-                // Aquí se muestra "Activo" para true e "Inactivo" para false
-                return `<td>${value ? 'Activo' : 'Inactivo'}</td>`;
-            } else {
-                return `<td>${value}</td>`;
-            }
-        }).join('')}</tr>`
-    ).join('')}
+                }).join('')}</tr>`
+            ).join('')}
         </tbody>
     </table>`;
 
     containerElement.innerHTML = table;
 }
 
+(window as any).actualizarEstado = function actualizarEstado(key: string, itemIndex: number, valueIndex: number, nuevoEstado: boolean, containerElement: HTMLElement) {
+    const data = JSON.parse(localStorage.getItem(key) || '[]');
+    if (data[itemIndex]) {
+        const keys = Object.keys(data[itemIndex]);
+        const keyToUpdate = keys[valueIndex];
+        data[itemIndex][keyToUpdate] = nuevoEstado; 
+
+        localStorage.setItem(key, JSON.stringify(data)); 
+    }
+    
+    listarEnTabla(key, containerElement);
+}
 
 
 
