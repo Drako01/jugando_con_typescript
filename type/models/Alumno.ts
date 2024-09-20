@@ -3,7 +3,7 @@ import { Curso } from "./Curso.js";
 
 export class Alumno extends Persona {
     matricula: string;
-    cursos: Curso[];
+    cursos: string[];
 
     constructor(
         id: number,
@@ -11,7 +11,7 @@ export class Alumno extends Persona {
         apellido: string,
         nacimiento: Date,
         dni: number,
-        matricula: any,
+        matricula: string,
         email?: string
     ) {
         super(id, nombre, apellido, nacimiento, dni, "Alumno", email);
@@ -19,9 +19,8 @@ export class Alumno extends Persona {
         this.cursos = [];
     }
 
-    inscribirse(curso: Curso) {
-        this.cursos.push(curso);
-        curso.agregarAlumno(this);  
+    inscribirse(comisiones: string[]) {
+        this.cursos = comisiones;  
     }
 
     mostrarDatos(): string {

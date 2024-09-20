@@ -1,7 +1,7 @@
-import { Categoria } from "../models/Categoria";
-import { Curso } from "../models/Curso";
-import { Profesor } from "../models/Profesor";
-import { Alumno } from "../models/Alumno";
+import { Categoria } from "../models/Categoria.js";
+import { Curso } from "../models/Curso.js";
+import { Profesor } from "../models/Profesor.js";
+import { Alumno } from "../models/Alumno.js";
 
 export function agregarAlLocalStorage(key: string, value: any) {
     const existingData = localStorage.getItem(key);
@@ -51,18 +51,80 @@ export function cargarCategoriasDesdeLS() {
 
 export function cargarCursosDesdeLS() {
     const cursosAlmacenados = JSON.parse(localStorage.getItem("Cursos") || '[]');
-    const selectCursos = document.getElementById('cursosProfesor') as HTMLSelectElement;
+    const selectCursos = document.getElementById('cursosAlumno') as HTMLSelectElement;
 
-    selectCursos.innerHTML = '<option value="">--Selecciona una Categoria--</option>';
+    selectCursos.innerHTML = '<option value="" disabled>Seleccione 1 o más Cursos</option>';
     if (cursosAlmacenados) {
         cursosAlmacenados.forEach((curso: Curso) => {
-            console.log(curso);
             const option = document.createElement('option');
-            option.value = curso.nombre;
-            option.text = curso.nombre;
+            option.value = curso.comision;
+            option.text = `${curso.nombre} - Comisión: ${curso.comision}`;
             selectCursos.appendChild(option);
         });
     }
+}
+
+export function actualizarCantidadAlumnosPorCurso() {
+    const alumnosAlmacenados: Alumno[] = JSON.parse(localStorage.getItem("Alumnos") || '[]');
+    
+    const cursosAlmacenados: Curso[] = JSON.parse(localStorage.getItem("Cursos") || '[]').map((cursoData: Curso) => new Curso(
+        cursoData.id,
+        cursoData.nombre,
+        cursoData.inicio,
+        cursoData.finalizacion,
+        cursoData.estado,
+        cursoData.cantidadAlumnos,
+        cursoData.categoria,
+        cursoData.profesores.length > 0 ? cursoData.profesores[0] : undefined,
+        cursoData.comision
+    ));
+
+    cursosAlmacenados.forEach(curso => {
+        curso.cantidadAlumnos = 0;  
+        curso.alumnos = [];  
+    });
+
+    alumnosAlmacenados.forEach(alumno => {
+        alumno.cursos.forEach(comision => {
+            const curso = cursosAlmacenados.find(curso => curso.comision.toString() === comision.toString());
+            if (curso) {
+                curso.agregarAlumno(alumno);  
+            }
+        });
+    });
+
+    localStorage.setItem("Cursos", JSON.stringify(cursosAlmacenados));
+}
+
+export function cargarCursosLS(): Curso[] {
+    const cursosAlmacenados = JSON.parse(localStorage.getItem("Cursos") || '[]');
+
+    // Convertir cada objeto recuperado del localStorage a una instancia de Curso
+    return cursosAlmacenados.map((curso: any) => new Curso(
+        curso.id,
+        curso.nombre,
+        curso.inicio,
+        curso.finalizacion,
+        curso.estado,
+        curso.cantidadAlumnos,
+        curso.categoria,
+        curso.profesores ? curso.profesores[0] : undefined,
+        curso.comision
+    ));
+}
+
+export function actualizarCursosConAlumnos(cursosSeleccionados: string[]) {
+    const cursosAlmacenados: Curso[] = JSON.parse(localStorage.getItem("Cursos") || '[]');
+
+    cursosSeleccionados.forEach(comisionSeleccionada => {
+        // Agregar el tipo explícito 'Curso' para 'curso'
+        const curso = cursosAlmacenados.find((curso: Curso) => curso.comision === comisionSeleccionada);
+        if (curso) {
+            curso.cantidadAlumnos = (curso.cantidadAlumnos || 0) + 1; // Incrementa la cantidad de alumnos
+        }
+    });
+
+    localStorage.setItem("Cursos", JSON.stringify(cursosAlmacenados)); // Guardar los cursos actualizados
 }
 
 export function cargarProfesoresDesdeLS() {
@@ -118,24 +180,24 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
             <tr class='table-tittle'>${Object.keys(data[0]).map(key => `<th scope="col">${key.toUpperCase()}</th>`).join('')}</tr>
         </thead>
         <tbody>
-            ${data.map((item: T, index) => 
-                `<tr>${Object.entries(item).map(([keyName, value], valueIndex) => {
-                    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                        if (value.hasOwnProperty('comision')) {
-                            return `<td>${(value as Curso).comision}</td>`;
-                        }
-                        return `<td>${(value as any).categoria || ''}</td>`;
-                    } else if (Array.isArray(value)) {
-                        if (value.length > 0 && typeof value[0] === 'object') {
-                            if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
-                                return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
-                            } else if (value[0].hasOwnProperty('comision')) {
-                                return `<td>${value.map(v => v.comision).join(', ')}</td>`;
-                            }
-                        }
-                        return `<td>${value}</td>`;
-                    } else if (typeof value === 'boolean') {
-                        return `<td> 
+            ${data.map((item: T, index) =>
+        `<tr>${Object.entries(item).map(([keyName, value], valueIndex) => {
+            if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                if (value.hasOwnProperty('comision')) {
+                    return `<td>${(value as Curso).comision}</td>`;
+                }
+                return `<td>${(value as any).categoria || ''}</td>`;
+            } else if (Array.isArray(value)) {
+                if (value.length > 0 && typeof value[0] === 'object') {
+                    if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
+                        return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
+                    } else if (value[0].hasOwnProperty('comision')) {
+                        return `<td>${value.map(v => v.comision).join(', ')}</td>`;
+                    }
+                }
+                return `<td>${value}</td>`;
+            } else if (typeof value === 'boolean') {
+                return `<td> 
                                     <input type="checkbox" ${value ? 'checked' : ''} 
                                         onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, 
                                         this.checked, document.getElementById('${containerElement.id}'))"> 
@@ -143,15 +205,15 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
                                         ${value ? 'Activo' : 'Inactivo'}
                                     </span>
                                 </td>`;
-                    
-                    } else {
-                        // Condición para aplicar la clase "td-categoria" solo a las tablas de Categorias
-                        return key === 'Categorias' && keyName === 'categoria' 
-                            ? `<td class='td-categoria'>${value}</td>`
-                            : `<td>${value}</td>`;
-                    }
-                }).join('')}</tr>`
-            ).join('')}
+
+            } else {
+                // Condición para aplicar la clase "td-categoria" solo a las tablas de Categorias
+                return key === 'Categorias' && keyName === 'categoria'
+                    ? `<td class='td-categoria'>${value}</td>`
+                    : `<td>${value}</td>`;
+            }
+        }).join('')}</tr>`
+    ).join('')}
         </tbody>
     </table>`;
 
@@ -163,11 +225,11 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
     if (data[itemIndex]) {
         const keys = Object.keys(data[itemIndex]);
         const keyToUpdate = keys[valueIndex];
-        data[itemIndex][keyToUpdate] = nuevoEstado; 
+        data[itemIndex][keyToUpdate] = nuevoEstado;
 
-        localStorage.setItem(key, JSON.stringify(data)); 
+        localStorage.setItem(key, JSON.stringify(data));
     }
-    
+
     listarEnTabla(key, containerElement);
 }
 

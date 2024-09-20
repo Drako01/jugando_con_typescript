@@ -6,13 +6,16 @@ import {
     agregarAlLocalStorage,
     cargarCategoriasDesdeLS,
     cargarProfesoresDesdeLS,
+    cargarCursosDesdeLS,
     generarMatricula,
     generarComision,
-    listarEnTabla
+    listarEnTabla,
+    actualizarCantidadAlumnosPorCurso
 } from './functions/Functions.js';
 
 window.onload = () => {
     cargarCategoriasDesdeLS();
+    cargarCursosDesdeLS();
 };
 cargarProfesoresDesdeLS();
 // Verificación y adición de Alumno
@@ -24,7 +27,12 @@ document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
     const dni = parseInt((document.getElementById('dniAlumno') as HTMLInputElement).value);
     const email = (document.getElementById('emailAlumno') as HTMLInputElement).value.trim();
 
+    const cursosSeleccionados = Array.from(
+        (document.getElementById('cursosAlumno') as HTMLSelectElement).selectedOptions
+    ).map(option => option.value);
+
     const alumnosAlmacenados: Alumno[] = JSON.parse(localStorage.getItem("Alumnos") || '[]');
+    
 
     const alumnoExiste = alumnosAlmacenados.some((alumno: Alumno) =>
         alumno.nombre.toLowerCase() === nombre.toLowerCase() &&
@@ -38,13 +46,16 @@ document.getElementById('alumnoForm')?.addEventListener('submit', (e) => {
 
         const matricula = generarMatricula(nombre, apellido, alumnosAlmacenados);
         const alumno = new Alumno(nuevoId, nombre, apellido, fechaNac, dni, matricula, email);
+        alumno.inscribirse(cursosSeleccionados);
+
 
         alumnosAlmacenados.push(alumno);
 
         agregarAlLocalStorage("Alumnos", alumno);
-
+        actualizarCantidadAlumnosPorCurso();
+        
     } else {
-        console.log(`El alumno ${nombre} ${apellido} ya existe.`);
+        console.error(`El alumno ${nombre} ${apellido} ya existe.`);
     }
 });
 

@@ -23,7 +23,7 @@ export class Curso {
         cantidadAlumnos: number = 0,
         categoria?: Categoria,
         profesor?: Profesor,
-        comision?: any
+        comision?: string
     ) {
         this.id = id;
         this.nombre = nombre;
