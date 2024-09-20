@@ -218,6 +218,9 @@ const parrafoFooter: HTMLParagraphElement = document.createElement("p");
 const anioActual: number = new Date().getFullYear();
 
 if (footer) {
-    parrafoFooter.innerHTML = `Alejandro Di Stefano | Drako01 - ${anioActual}`;
+    parrafoFooter.innerHTML = `Alejandro Di Stefano | <a style='color: yellow; 
+                                                                text-decoration: none;
+                                                                cursor: pointer;' 
+                            href= 'https://github.com/Drako01' target='_blank'>Drako01</a> - ${anioActual}`;
     footer.appendChild(parrafoFooter);
 }
