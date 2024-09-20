@@ -173,47 +173,53 @@ export function listarEnTabla<T extends object>(key: string, containerElement: H
         return;
     }
 
+    const filteredKeys = Object.keys(data[0]).filter(keyName => !(key === 'Cursos' && keyName === 'alumnos'));
+
     let table = `
     <h2>Tabla de ${key}</h2>
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
-            <tr class='table-tittle'>${Object.keys(data[0]).map(key => `<th scope="col">${key.toUpperCase()}</th>`).join('')}</tr>
+            <tr class='table-tittle'>
+                ${filteredKeys.map(keyName => `<th scope="col">${keyName.toUpperCase()}</th>`).join('')}
+            </tr>
         </thead>
         <tbody>
             ${data.map((item: T, index) =>
-        `<tr>${Object.entries(item).map(([keyName, value], valueIndex) => {
-            if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                if (value.hasOwnProperty('comision')) {
-                    return `<td>${(value as Curso).comision}</td>`;
-                }
-                return `<td>${(value as any).categoria || ''}</td>`;
-            } else if (Array.isArray(value)) {
-                if (value.length > 0 && typeof value[0] === 'object') {
-                    if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
-                        return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
-                    } else if (value[0].hasOwnProperty('comision')) {
-                        return `<td>${value.map(v => v.comision).join(', ')}</td>`;
+                `<tr>${Object.entries(item).map(([keyName, value], valueIndex) => {                    
+                    if (key === 'Cursos' && keyName === 'alumnos') {
+                        return ''; 
                     }
-                }
-                return `<td>${value}</td>`;
-            } else if (typeof value === 'boolean') {
-                return `<td> 
-                                    <input type="checkbox" ${value ? 'checked' : ''} 
-                                        onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, 
-                                        this.checked, document.getElementById('${containerElement.id}'))"> 
-                                    <span style="color: ${value ? 'green' : 'red'};">
-                                        ${value ? 'Activo' : 'Inactivo'}
-                                    </span>
-                                </td>`;
 
-            } else {
-                // Condición para aplicar la clase "td-categoria" solo a las tablas de Categorias
-                return key === 'Categorias' && keyName === 'categoria'
-                    ? `<td class='td-categoria'>${value}</td>`
-                    : `<td>${value}</td>`;
-            }
-        }).join('')}</tr>`
-    ).join('')}
+                    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                        if (value.hasOwnProperty('comision')) {
+                            return `<td>${(value as Curso).comision}</td>`;
+                        }
+                        return `<td>${(value as any).categoria || ''}</td>`;
+                    } else if (Array.isArray(value)) {
+                        if (value.length > 0 && typeof value[0] === 'object') {
+                            if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
+                                return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
+                            } else if (value[0].hasOwnProperty('comision')) {
+                                return `<td>${value.map(v => v.comision).join(', ')}</td>`;
+                            }
+                        }
+                        return `<td>${value}</td>`;
+                    } else if (typeof value === 'boolean') {
+                        return `<td> 
+                            <input type="checkbox" ${value ? 'checked' : ''} 
+                                onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, 
+                                this.checked, document.getElementById('${containerElement.id}'))"> 
+                            <span style="color: ${value ? 'green' : 'red'};">
+                                ${value ? 'Activo' : 'Inactivo'}
+                            </span>
+                        </td>`;
+                    } else {
+                        return key === 'Categorias' && keyName === 'categoria'
+                            ? `<td class='td-categoria'>${value}</td>`
+                            : `<td>${value}</td>`;
+                    }
+                }).join('')}</tr>`
+            ).join('')}
         </tbody>
     </table>`;
 
