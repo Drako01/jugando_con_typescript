@@ -117,7 +117,9 @@ export function listarEnTabla(key, containerElement) {
         containerElement.innerHTML = `<p>No hay datos disponibles para ${key}.</p>`;
         return;
     }
-    const filteredKeys = Object.keys(data[0]).filter(keyName => !(key === 'Cursos' && keyName === 'alumnos'));
+    // Filtramos las claves, excluyendo siempre la clave 'role'
+    const filteredKeys = Object.keys(data[0]).filter(keyName => keyName !== 'role' &&
+        !(key === 'Cursos' && keyName === 'alumnos'));
     let table = `
     <h2>Tabla de ${key}</h2>
     <table class="table table-striped table-bordered">
@@ -127,7 +129,10 @@ export function listarEnTabla(key, containerElement) {
             </tr>
         </thead>
         <tbody>
-            ${data.map((item, index) => `<tr>${Object.entries(item).map(([keyName, value], valueIndex) => {
+            ${data.map((item, index) => `<tr>${Object.entries(item)
+        // Filtramos la clave 'role' para que no aparezca en el tbody
+        .filter(([keyName]) => keyName !== 'role')
+        .map(([keyName, value], valueIndex) => {
         if (key === 'Cursos' && keyName === 'alumnos') {
             return '';
         }
