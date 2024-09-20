@@ -12,117 +12,131 @@
 </head>
 
 <body>
-    <section class="form-section">
-        <!-- Formulario para agregar Alumno -->
-        <form id="alumnoForm">
-            <h3>Agregar Alumno</h3>
-            <div class="form-group">
-                <label for="nombreAlumno">Nombre:</label>
-                <input type="text" id="nombreAlumno" required>
-            </div>
-            <div class="form-group">
-                <label for="apellidoAlumno">Apellido:</label>
-                <input type="text" id="apellidoAlumno" required>
-            </div>
-            <div class="form-group">
-                <label for="dniAlumno">DNI:</label>
-                <input type="number" id="dniAlumno" required min="1000000" max="99999999">
-            </div>
-            <div class="form-group">
-                <label for="emailAlumno">Email:</label>
-                <input type="email" id="emailAlumno" required>
-            </div>
-            <div class="form-group">
-                <label for="fechaNacAlumno">Fecha de Nacimiento:</label>
-                <input type="date" id="fechaNacAlumno" required>
-            </div>
-            <!-- Select opcional para asignar curso -->
-            <div class="form-group">
-                <label for="cursosAlumno">Inscribirse a Cursos (opcional):</label>
-                <select multiple id="cursosAlumno">
-                    <option value="" disabled>Seleccione 1 o más Cursos</option>
-                </select>
-            </div>
+    <main>
+        <div class="container">
+            <h1>Gestión de Cursos</h1>
+            <h4>*Se recomienda genrear los datos en el Orden en que estan los Formularios</h4>
+            <hr>
+            <section class="form-section">
 
-            <button type="submit">Agregar Alumno</button>
-        </form>
+                <!-- Formulario para agregar Categoria -->
+                <form id="categoriaForm">
+                    <h3>Agregar Categoria</h3>
+                    <div class="form-group">
+                        <label for="nombreCategoria">Nombre de la Categoria:</label>
+                        <input type="text" id="nombreCategoria" required>
+                    </div>
 
-        <!-- Formulario para agregar Profesor -->
-        <form id="profesorForm">
-            <h3>Agregar Profesor</h3>
-            <div class="form-group">
-                <label for="nombreProfesor">Nombre:</label>
-                <input type="text" id="nombreProfesor" required>
-            </div>
-            <div class="form-group">
-                <label for="apellidoProfesor">Apellido:</label>
-                <input type="text" id="apellidoProfesor" required>
-            </div>
-            <div class="form-group">
-                <label for="dniProfesor">DNI:</label>
-                <input type="number" id="dniProfesor" required min="1000000" max="99999999">
-            </div>
-            <div class="form-group">
-                <label for="emailProfesor">Email:</label>
-                <input type="email" id="emailProfesor" required>
-            </div>
-            <div class="form-group">
-                <label for="fechaNacProfesor">Fecha de Nacimiento:</label>
-                <input type="date" id="fechaNacProfesor" required>
-            </div>
-
-            <button type="submit">Agregar Profesor</button>
-        </form>
+                    <button type="submit">Agregar Categoria</button>
+                </form>
 
 
-        <!-- Formulario para agregar Curso -->
-        <form id="cursoForm">
-            <h3>Agregar Curso</h3>
-            <div class="form-group">
-                <label for="nombreCurso">Nombre del Curso:</label>
-                <input type="text" id="nombreCurso" required>
-            </div>
-            <div class="form-group">
-                <label for="fechaInicioCurso">Fecha de Inicio:</label>
-                <input type="date" id="fechaInicioCurso" required>
-            </div>
-            <div class="form-group">
-                <label for="fechaFinCurso">Fecha de Finalización:</label>
-                <input type="date" id="fechaFinCurso" required>
-            </div>
-            <div class="form-group">
-                <label for="categoriaCurso">Categoría del Curso: (Selecciona una)</label>
-                <select id="categoriaCurso" required></select>
-            </div>
+                <!-- Formulario para agregar Profesor -->
+                <form id="profesorForm">
+                    <h3>Agregar Profesor</h3>
+                    <div class="form-group">
+                        <label for="nombreProfesor">Nombre:</label>
+                        <input type="text" id="nombreProfesor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoProfesor">Apellido:</label>
+                        <input type="text" id="apellidoProfesor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dniProfesor">DNI:</label>
+                        <input type="number" id="dniProfesor" required min="1000000" max="99999999">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailProfesor">Email:</label>
+                        <input type="email" id="emailProfesor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaNacProfesor">Fecha de Nacimiento:</label>
+                        <input type="date" id="fechaNacProfesor" required>
+                    </div>
 
-            <!-- Select opcional para asignar profesor -->
-            <div class="form-group">
-                <label for="profesorCurso">Asignar Profesor (opcional):</label>
-                <select id="profesorCurso"></select>
-            </div>
-
-            <button type="submit">Agregar Curso</button>
-        </form>
+                    <button type="submit">Agregar Profesor</button>
+                </form>
 
 
-        <!-- Formulario para agregar Categoria -->
-        <form id="categoriaForm">
-            <h3>Agregar Categoria</h3>
-            <div class="form-group">
-                <label for="nombreCategoria">Nombre de la Categoria:</label>
-                <input type="text" id="nombreCategoria" required>
-            </div>
+                <!-- Formulario para agregar Curso -->
+                <form id="cursoForm">
+                    <h3>Agregar Curso</h3>
+                    <div class="form-group">
+                        <label for="nombreCurso">Nombre del Curso:</label>
+                        <input type="text" id="nombreCurso" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaInicioCurso">Fecha de Inicio:</label>
+                        <input type="date" id="fechaInicioCurso" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFinCurso">Fecha de Finalización:</label>
+                        <input type="date" id="fechaFinCurso" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoriaCurso">Categoría del Curso: (Selecciona una)</label>
+                        <select id="categoriaCurso" required></select>
+                    </div>
 
-            <button type="submit">Agregar Categoria</button>
-        </form>
-    </section>
+                    <!-- Select opcional para asignar profesor -->
+                    <div class="form-group">
+                        <label for="profesorCurso">Asignar Profesor (opcional):</label>
+                        <select id="profesorCurso"></select>
+                    </div>
 
-    <section class="data-section">
-        <article id="data-section__cursos" class="data-section__cursos"></article>
-        <article id="data-section__categorias" class="data-section__categorias"></article>
-        <article id="data-section__profes" class="data-section__profes"></article>
-        <article id="data-section__alumnos" class="data-section__alumnos"></article>
-    </section>
+                    <button type="submit">Agregar Curso</button>
+                </form>
+
+
+                <!-- Formulario para agregar Alumno -->
+                <form id="alumnoForm">
+                    <h3>Agregar Alumno</h3>
+                    <div class="form-group">
+                        <label for="nombreAlumno">Nombre:</label>
+                        <input type="text" id="nombreAlumno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoAlumno">Apellido:</label>
+                        <input type="text" id="apellidoAlumno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dniAlumno">DNI:</label>
+                        <input type="number" id="dniAlumno" required min="1000000" max="99999999">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailAlumno">Email:</label>
+                        <input type="email" id="emailAlumno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaNacAlumno">Fecha de Nacimiento:</label>
+                        <input type="date" id="fechaNacAlumno" required>
+                    </div>
+                    <!-- Select opcional para asignar curso -->
+                    <div class="form-group">
+                        <label for="cursosAlumno">Inscribirse a Cursos (opcional):</label>
+                        <select multiple id="cursosAlumno">
+                            <option value="" disabled>Seleccione 1 o más Cursos</option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Agregar Alumno</button>
+                </form>
+
+            </section>
+            <hr>
+            <h2>Visualización de los Resultados</h2>
+            <hr>
+            <section class="data-section">
+                <article id="data-section__cursos" class="data-section__cursos"></article>
+                <article id="data-section__categorias" class="data-section__categorias"></article>
+                <article id="data-section__profes" class="data-section__profes"></article>
+                <article id="data-section__alumnos" class="data-section__alumnos"></article>
+            </section>
+        </div>
+    </main>
+    <footer id="footer">       
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>

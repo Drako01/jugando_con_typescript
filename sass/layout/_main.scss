@@ -1,6 +1,6 @@
 body {
     font-family: "Roboto", sans-serif;
-    padding: 20px;    
+    
     .data-section{
         @include flexbox(column, space-evenly, flex-start);
         

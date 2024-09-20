@@ -212,3 +212,12 @@ document.addEventListener('DOMContentLoaded', function () {
         listarEnTabla('Profesores', sectionProfesores);
     }
 });
+
+const footer: HTMLElement | null = document.getElementById("footer");
+const parrafoFooter: HTMLParagraphElement = document.createElement("p");
+const anioActual: number = new Date().getFullYear();
+
+if (footer) {
+    parrafoFooter.innerHTML = `Alejandro Di Stefano | Drako01 - ${anioActual}`;
+    footer.appendChild(parrafoFooter);
+}
