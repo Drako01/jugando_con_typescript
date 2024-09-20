@@ -193,8 +193,8 @@ document.getElementById('categoriaForm')?.addEventListener('submit', (e) => {
 document.addEventListener('DOMContentLoaded', function () {
     const sectionCursos = document.getElementById('data-section__cursos');
     const sectionCategorias = document.getElementById('data-section__categorias');
-    const sectionAlumnos = document.getElementById('data-section__profes');
-    const sectionProfesores = document.getElementById('data-section__alumnos');
+    const sectionAlumnos = document.getElementById('data-section__alumnos');
+    const sectionProfesores = document.getElementById('data-section__profes');
 
     if (sectionCursos) {
         listarEnTabla('Cursos', sectionCursos);
