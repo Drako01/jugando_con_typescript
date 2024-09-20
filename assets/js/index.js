@@ -11,7 +11,6 @@ window.onload = () => {
 cargarProfesoresDesdeLS();
 // Verificación y adición de Alumno
 (_a = document.getElementById('alumnoForm')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', (e) => {
-    e.preventDefault();
     const nombre = document.getElementById('nombreAlumno').value.trim();
     const apellido = document.getElementById('apellidoAlumno').value.trim();
     const dni = parseInt(document.getElementById('dniAlumno').value);
@@ -54,8 +53,7 @@ cargarProfesoresDesdeLS();
     }
 });
 // Manejar la adición de un Curso
-(_c = document.getElementById('cursoForm')) === null || _c === void 0 ? void 0 : _c.addEventListener('submit', (e) => {
-    e.preventDefault();
+(_c = document.getElementById('cursoForm')) === null || _c === void 0 ? void 0 : _c.addEventListener('submit', (e) => {    
     const nombre = document.getElementById('nombreCurso').value.trim();
     const fechaInicio = new Date(document.getElementById('fechaInicioCurso').value);
     const fechaFinalizacion = new Date(document.getElementById('fechaFinCurso').value);
