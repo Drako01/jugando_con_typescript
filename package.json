@@ -1,15 +1,16 @@
 {
-  "name": "typescript",
-  "version": "1.0.0",
-  "description": "",
-  "main": "assets/js/index.js",
+  "name": "typescript-professional-guide",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Guía profesional de TypeScript con laboratorio práctico sobre DOM, clases, módulos y localStorage.",
   "scripts": {
-    "start": "node assets/js/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "typecheck": "tsc --noEmit"
   },
   "author": "Alejandro Di Stefano",
-  "license": "ISC",
-  "dependencies": {
-    "typescript": "file:"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "6.0.3"
   }
 }
