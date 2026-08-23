@@ -1,0 +1,29 @@
+@use '../base/variables' as *;
+@use '../base/mixins' as *;
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba($color-bg, .84);
+  border-bottom: 1px solid $color-border;
+  backdrop-filter: blur(18px);
+
+  &__inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+}
+
+.brand { display: inline-flex; align-items: center; gap: 12px; }
+.brand__mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: $color-primary; color: white; font-family: $font-mono; font-weight: 800; }
+.brand strong, .brand small { display: block; }
+.brand strong { font-size: .96rem; }
+.brand small { color: $color-muted; font-size: .72rem; }
+
+.site-nav { display: flex; align-items: center; gap: 24px; color: $color-muted; font-size: .9rem; font-weight: 600; }
+.site-nav a { transition: color $transition; }
+.site-nav a:hover { color: $color-text; }
+
+@include mobile {
+  .site-header__inner { min-height: 66px; }
+  .site-nav a:not(:last-child) { display: none; }
+  .brand small { display: none; }
+}
