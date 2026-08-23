@@ -3,104 +3,121 @@ import { Curso } from "../models/Curso.js";
 import { Profesor } from "../models/Profesor.js";
 import { Alumno } from "../models/Alumno.js";
 
-export function agregarAlLocalStorage(key: string, value: any) {
-    const existingData = localStorage.getItem(key);
+type StorageKey = "Alumnos" | "Profesores" | "Cursos" | "Categorias";
 
-    let dataArray = JSON.parse(existingData || '[]');
+function readArray<T>(key: StorageKey): T[] {
+    const raw = localStorage.getItem(key);
+    if (!raw) return [];
+
     try {
-        dataArray = existingData ? JSON.parse(existingData) : [];
-    } catch (e) {
-        console.error('Error parsing JSON from localStorage:', e);
-        dataArray = [];
-    }
-
-    if (!Array.isArray(dataArray)) {
-        dataArray = [];
-    }
-
-    const valorExiste = dataArray.some((item: any) => item.nombre === value.nombre);
-
-    if (!valorExiste) {
-        const formattedValue = {
-            ...value,
-            nacimiento: value.nacimiento instanceof Date ? value.nacimiento.toISOString().split('T')[0] : value.nacimiento,
-            registro: value.registro instanceof Date ? value.registro.toISOString().split('T')[0] : value.registro
-        };
-
-        dataArray.push(formattedValue);
-        localStorage.setItem(key, JSON.stringify(dataArray));
-    } else {
-        console.log(`El elemento con el nombre "${value.nombre}" ya existe y no será agregado.`);
+        const parsed: unknown = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed as T[] : [];
+    } catch (error) {
+        console.error(`No se pudo leer ${key} desde localStorage:`, error);
+        return [];
     }
 }
 
-export function cargarCategoriasDesdeLS() {
-    const categoriasAlmacenadas = JSON.parse(localStorage.getItem("Categorias") || '[]');
-    const selectCategorias = document.getElementById('categoriaCurso') as HTMLSelectElement;
-
-    selectCategorias.innerHTML = '';
-    if (categoriasAlmacenadas) {
-        categoriasAlmacenadas.forEach((categoria: Categoria) => {
-            const option = document.createElement('option');
-            option.value = categoria.categoria;
-            option.text = categoria.categoria;
-            selectCategorias.appendChild(option);
-        });
-    }
+function writeArray<T>(key: StorageKey, value: T[]): void {
+    localStorage.setItem(key, JSON.stringify(value));
 }
 
-export function cargarCursosDesdeLS() {
-    const cursosAlmacenados = JSON.parse(localStorage.getItem("Cursos") || '[]');
-    const selectCursos = document.getElementById('cursosAlumno') as HTMLSelectElement;
-
-    selectCursos.innerHTML = '<option value="" disabled>Seleccione 1 o más Cursos</option>';
-    if (cursosAlmacenados) {
-        cursosAlmacenados.forEach((curso: Curso) => {
-            const option = document.createElement('option');
-            option.value = curso.comision;
-            option.text = `${curso.nombre} - Comisión: ${curso.comision}`;
-            selectCursos.appendChild(option);
-        });
-    }
+function escapeHtml(value: unknown): string {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
-export function actualizarCantidadAlumnosPorCurso() {
-    const alumnosAlmacenados: Alumno[] = JSON.parse(localStorage.getItem("Alumnos") || '[]');
-    
-    const cursosAlmacenados: Curso[] = JSON.parse(localStorage.getItem("Cursos") || '[]').map((cursoData: Curso) => new Curso(
-        cursoData.id,
-        cursoData.nombre,
-        cursoData.inicio,
-        cursoData.finalizacion,
-        cursoData.estado,
-        cursoData.cantidadAlumnos,
-        cursoData.categoria,
-        cursoData.profesores.length > 0 ? cursoData.profesores[0] : undefined,
-        cursoData.comision
+export function agregarAlLocalStorage(key: StorageKey, value: { nombre: string; nacimiento?: Date | string; registro?: Date | string }): void {
+    const data = readArray<typeof value>(key);
+    const exists = data.some(item => item.nombre?.toLowerCase() === value.nombre.toLowerCase());
+
+    if (exists) {
+        console.info(`El elemento "${value.nombre}" ya existe en ${key}.`);
+        return;
+    }
+
+    const formattedValue = {
+        ...value,
+        nacimiento: value.nacimiento instanceof Date ? value.nacimiento.toISOString().split("T")[0] : value.nacimiento,
+        registro: value.registro instanceof Date ? value.registro.toISOString().split("T")[0] : value.registro
+    };
+
+    writeArray(key, [...data, formattedValue]);
+}
+
+export function cargarCategoriasDesdeLS(): void {
+    const categorias = readArray<Categoria>("Categorias");
+    const select = document.getElementById("categoriaCurso") as HTMLSelectElement | null;
+    if (!select) return;
+
+    select.innerHTML = categorias.length ? "" : '<option value="" disabled selected>Creá una categoría primero</option>';
+    categorias.forEach(categoria => {
+        const option = document.createElement("option");
+        option.value = categoria.categoria;
+        option.textContent = categoria.categoria;
+        select.appendChild(option);
+    });
+}
+
+export function cargarCursosDesdeLS(): void {
+    const cursos = readArray<Curso>("Cursos");
+    const select = document.getElementById("cursosAlumno") as HTMLSelectElement | null;
+    if (!select) return;
+
+    select.innerHTML = '<option value="" disabled>Seleccione 1 o más cursos</option>';
+    cursos.forEach(curso => {
+        const option = document.createElement("option");
+        option.value = String(curso.comision);
+        option.textContent = `${curso.nombre} · Comisión ${curso.comision}`;
+        select.appendChild(option);
+    });
+}
+
+export function cargarProfesoresDesdeLS(): void {
+    const profesores = readArray<Profesor>("Profesores").filter(profesor => profesor.estado === true);
+    const select = document.getElementById("profesorCurso") as HTMLSelectElement | null;
+    if (!select) return;
+
+    select.innerHTML = '<option value="">Seleccioná un profesor</option>';
+    profesores.forEach(profesor => {
+        const option = document.createElement("option");
+        option.value = String(profesor.id);
+        option.textContent = `${profesor.nombre} ${profesor.apellido}`;
+        select.appendChild(option);
+    });
+}
+
+export function actualizarCantidadAlumnosPorCurso(): void {
+    const alumnos = readArray<Alumno>("Alumnos");
+    const cursos = readArray<Curso>("Cursos").map(curso => new Curso(
+        curso.id,
+        curso.nombre,
+        curso.inicio,
+        curso.finalizacion,
+        curso.estado,
+        0,
+        curso.categoria,
+        curso.profesores?.[0],
+        curso.comision
     ));
 
-    cursosAlmacenados.forEach(curso => {
-        curso.cantidadAlumnos = 0;  
-        curso.alumnos = [];  
-    });
-
-    alumnosAlmacenados.forEach(alumno => {
+    cursos.forEach(curso => { curso.alumnos = []; });
+    alumnos.forEach(alumno => {
         alumno.cursos.forEach(comision => {
-            const curso = cursosAlmacenados.find(curso => curso.comision.toString() === comision.toString());
-            if (curso) {
-                curso.agregarAlumno(alumno);  
-            }
+            const curso = cursos.find(item => String(item.comision) === String(comision));
+            if (curso) curso.agregarAlumno(alumno);
         });
     });
 
-    localStorage.setItem("Cursos", JSON.stringify(cursosAlmacenados));
+    writeArray("Cursos", cursos);
 }
 
 export function cargarCursosLS(): Curso[] {
-    const cursosAlmacenados = JSON.parse(localStorage.getItem("Cursos") || '[]');
-
-    // Convertir cada objeto recuperado del localStorage a una instancia de Curso
-    return cursosAlmacenados.map((curso: any) => new Curso(
+    return readArray<Curso>("Cursos").map(curso => new Curso(
         curso.id,
         curso.nombre,
         curso.inicio,
@@ -108,143 +125,111 @@ export function cargarCursosLS(): Curso[] {
         curso.estado,
         curso.cantidadAlumnos,
         curso.categoria,
-        curso.profesores ? curso.profesores[0] : undefined,
+        curso.profesores?.[0],
         curso.comision
     ));
 }
 
-export function actualizarCursosConAlumnos(cursosSeleccionados: string[]) {
-    const cursosAlmacenados: Curso[] = JSON.parse(localStorage.getItem("Cursos") || '[]');
-
-    cursosSeleccionados.forEach(comisionSeleccionada => {
-        // Agregar el tipo explícito 'Curso' para 'curso'
-        const curso = cursosAlmacenados.find((curso: Curso) => curso.comision === comisionSeleccionada);
-        if (curso) {
-            curso.cantidadAlumnos = (curso.cantidadAlumnos || 0) + 1; // Incrementa la cantidad de alumnos
-        }
+export function actualizarCursosConAlumnos(cursosSeleccionados: string[]): void {
+    const cursos = readArray<Curso>("Cursos");
+    cursosSeleccionados.forEach(comision => {
+        const curso = cursos.find(item => String(item.comision) === String(comision));
+        if (curso) curso.cantidadAlumnos = (curso.cantidadAlumnos || 0) + 1;
     });
-
-    localStorage.setItem("Cursos", JSON.stringify(cursosAlmacenados)); // Guardar los cursos actualizados
+    writeArray("Cursos", cursos);
 }
 
-export function cargarProfesoresDesdeLS() {
-    const profesoresAlmacenados = JSON.parse(localStorage.getItem("Profesores") || '[]');
-    const selectProfesores = document.getElementById('profesorCurso') as HTMLSelectElement;
-
-    selectProfesores.innerHTML = '<option value="">--Selecciona un Profesor--</option>';
-
-    if (profesoresAlmacenados) {
-        const profesoresActivos = profesoresAlmacenados.filter((profesor: Profesor) => profesor.estado === true);
-
-        profesoresActivos.forEach((profesor: Profesor) => {
-            const option = document.createElement('option');
-            option.value = JSON.stringify(profesor.id);
-            option.text = `${profesor.nombre} ${profesor.apellido}`;
-            selectProfesores.appendChild(option);
-        });
-    }
-}
-
-export function generarMatricula(nombre: string, apellido: string, alumnosAlmacenados: Alumno[]): string {
-    const iniciales = nombre.charAt(0).toUpperCase() + apellido.charAt(0).toUpperCase();
-    let matricula: any;
-    let matriculaExiste;
+export function generarMatricula(nombre: string, apellido: string, alumnos: Alumno[]): string {
+    const initials = `${nombre.charAt(0)}${apellido.charAt(0)}`.toUpperCase();
+    let matricula: string;
 
     do {
-        const numeroAleatorio = ('000' + Math.floor(Math.random() * 100 + 1)).slice(-3);
-        matricula = `${iniciales}${numeroAleatorio}`;
-        matriculaExiste = alumnosAlmacenados.some((alumno: Alumno) => alumno.matricula === matricula);
-    } while (matriculaExiste);
+        const random = String(Math.floor(Math.random() * 1000)).padStart(3, "0");
+        matricula = `${initials}${random}`;
+    } while (alumnos.some(alumno => alumno.matricula === matricula));
 
     return matricula;
 }
 
-export function generarComision(cursosAlmacenados: Curso[]): number {
-    const ultimoCurso = cursosAlmacenados[cursosAlmacenados.length - 1];
-    const comisionAleatoria = Math.floor(Math.random() * 1000 + 1000) + 1;
-    return ultimoCurso ? ultimoCurso.id + comisionAleatoria : comisionAleatoria;
+export function generarComision(cursos: Curso[]): number {
+    const existing = new Set(cursos.map(curso => Number(curso.comision)));
+    let comision: number;
+    do {
+        comision = Math.floor(Math.random() * 9000) + 1000;
+    } while (existing.has(comision));
+    return comision;
 }
 
-export function listarEnTabla<T extends object>(key: string, containerElement: HTMLElement) {
-    const data: T[] = JSON.parse(localStorage.getItem(key) || '[]');
+function formatCell(key: string, keyName: string, value: unknown, index: number, valueIndex: number, containerId: string): string {
+    if (typeof value === "boolean") {
+        const stateClass = value ? "status--active" : "status--inactive";
+        const stateLabel = value ? "Activo" : "Inactivo";
+        return `<td><input type="checkbox" ${value ? "checked" : ""} aria-label="Cambiar estado" onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, this.checked, document.getElementById('${containerId}'))"><span class="status ${stateClass}">${stateLabel}</span></td>`;
+    }
+
+    if (Array.isArray(value)) {
+        const text = value.map(item => {
+            if (typeof item === "object" && item !== null && "nombre" in item) {
+                const record = item as { nombre?: string; apellido?: string; comision?: string | number };
+                return record.comision ?? `${record.nombre ?? ""} ${record.apellido ?? ""}`.trim();
+            }
+            return item;
+        }).join(", ");
+        return `<td>${escapeHtml(text || "—")}</td>`;
+    }
+
+    if (typeof value === "object" && value !== null) {
+        const record = value as { categoria?: string; comision?: string | number };
+        return `<td>${escapeHtml(record.comision ?? record.categoria ?? "—")}</td>`;
+    }
+
+    const className = key === "Categorias" && keyName === "categoria" ? ' class="td-categoria"' : "";
+    return `<td${className}>${escapeHtml(value === "" ? "—" : value)}</td>`;
+}
+
+export function listarEnTabla<T extends object>(key: StorageKey, containerElement: HTMLElement): void {
+    const data = readArray<T>(key);
 
     if (data.length === 0) {
-        containerElement.innerHTML = `<p>No hay datos disponibles para ${key}.</p>`;
+        containerElement.innerHTML = `<div class="data-panel__header"><h2>${key}</h2><span>0 registros</span></div><p>Todavía no hay datos disponibles.</p>`;
         return;
     }
 
-    // Filtramos las claves, excluyendo siempre la clave 'role'
-    const filteredKeys = Object.keys(data[0]).filter(keyName => keyName !== 'role' &&
-        !(key === 'Cursos' && keyName === 'alumnos')
-    );
+    const keys = Object.keys(data[0]).filter(keyName => keyName !== "role" && !(key === "Cursos" && keyName === "alumnos"));
+    const rows = data.map((item, index) => {
+        const cells = Object.entries(item)
+            .filter(([keyName]) => keyName !== "role" && !(key === "Cursos" && keyName === "alumnos"))
+            .map(([keyName, value], valueIndex) => formatCell(key, keyName, value, index, valueIndex, containerElement.id))
+            .join("");
+        return `<tr>${cells}</tr>`;
+    }).join("");
 
-    let table = `
-    <h2>Tabla de ${key}</h2>
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr class='table-tittle'>
-                ${filteredKeys.map(keyName => `<th scope="col">${keyName.toUpperCase()}</th>`).join('')}
-            </tr>
-        </thead>
-        <tbody>
-            ${data.map((item: T, index) =>
-                `<tr>${Object.entries(item)
-                    // Filtramos la clave 'role' para que no aparezca en el tbody
-                    .filter(([keyName]) => keyName !== 'role')
-                    .map(([keyName, value], valueIndex) => {
-
-                    if (key === 'Cursos' && keyName === 'alumnos') {
-                        return ''; 
-                    }
-
-                    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                        if (value.hasOwnProperty('comision')) {
-                            return `<td>${(value as Curso).comision}</td>`;
-                        }
-                        return `<td>${(value as any).categoria || ''}</td>`;
-                    } else if (Array.isArray(value)) {
-                        if (value.length > 0 && typeof value[0] === 'object') {
-                            if (value[0].hasOwnProperty('nombre') && value[0].hasOwnProperty('apellido')) {
-                                return `<td>${value.map(v => `${v.nombre ? v.nombre : ''} ${v.apellido ? v.apellido : ''}`).join(', ')}</td>`;
-                            } else if (value[0].hasOwnProperty('comision')) {
-                                return `<td>${value.map(v => v.comision).join(', ')}</td>`;
-                            }
-                        }
-                        return `<td>${value}</td>`;
-                    } else if (typeof value === 'boolean') {
-                        return `<td> 
-                            <input type="checkbox" ${value ? 'checked' : ''} 
-                                onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, 
-                                this.checked, document.getElementById('${containerElement.id}'))"> 
-                            <span style="color: ${value ? 'green' : 'red'};">
-                                ${value ? 'Activo' : 'Inactivo'}
-                            </span>
-                        </td>`;
-                    } else {
-                        return key === 'Categorias' && keyName === 'categoria'
-                            ? `<td class='td-categoria'>${value}</td>`
-                            : `<td>${value}</td>`;
-                    }
-                }).join('')}</tr>`
-            ).join('')}
-        </tbody>
-    </table>`;
-
-    containerElement.innerHTML = table;
+    containerElement.innerHTML = `
+        <div class="data-panel__header"><h2>${key}</h2><span>${data.length} ${data.length === 1 ? "registro" : "registros"}</span></div>
+        <div class="table-scroll" role="region" aria-label="Tabla de ${key}" tabindex="0">
+            <table class="data-table">
+                <thead><tr>${keys.map(keyName => `<th scope="col">${escapeHtml(keyName)}</th>`).join("")}</tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>`;
 }
 
-(window as any).actualizarEstado = function actualizarEstado(key: string, itemIndex: number, valueIndex: number, nuevoEstado: boolean, containerElement: HTMLElement) {
-    const data = JSON.parse(localStorage.getItem(key) || '[]');
-    if (data[itemIndex]) {
-        const keys = Object.keys(data[itemIndex]);
-        const keyToUpdate = keys[valueIndex];
-        data[itemIndex][keyToUpdate] = nuevoEstado;
+(window as typeof window & { actualizarEstado?: Function }).actualizarEstado = function actualizarEstado(
+    key: StorageKey,
+    itemIndex: number,
+    valueIndex: number,
+    nuevoEstado: boolean,
+    containerElement: HTMLElement | null
+): void {
+    const data = readArray<Record<string, unknown>>(key);
+    const item = data[itemIndex];
+    if (!item || !containerElement) return;
 
-        localStorage.setItem(key, JSON.stringify(data));
-    }
+    const keys = Object.keys(item).filter(keyName => keyName !== "role");
+    const keyToUpdate = keys[valueIndex];
+    if (!keyToUpdate) return;
 
+    item[keyToUpdate] = nuevoEstado;
+    writeArray(key, data);
     listarEnTabla(key, containerElement);
-}
-
-
-
+};

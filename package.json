@@ -1,12 +1,14 @@
 {
   "name": "typescript-professional-guide",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
-  "description": "Guía profesional de TypeScript con laboratorio práctico sobre DOM, clases, módulos y localStorage.",
+  "description": "Guía profesional de TypeScript y SASS con laboratorio práctico sobre DOM, clases, módulos, localStorage y responsive design.",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run styles",
     "watch": "tsc --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "styles": "npx --yes sass@1.92.1 sass/styles.scss assets/css/styles.css --style=compressed --no-source-map",
+    "styles:watch": "npx --yes sass@1.92.1 sass/styles.scss assets/css/styles.css --watch"
   },
   "author": "Alejandro Di Stefano",
   "license": "MIT",

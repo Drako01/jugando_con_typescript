@@ -1,20 +1,24 @@
-#footer {
-    background-color: #b6b6b6;
-    margin: 0;
-    position: sticky;
-    bottom: 0;
-    height: 4rem;
-    color: yellow;
-    @include flexbox(column, center, center);
+@use '../base/variables' as *;
+@use '../base/mixins' as *;
 
-    p {
-        font-size: 1.2rem;
-        text-shadow: 1px 1px 1px #222222;
+.site-footer {
+  border-top: 1px solid $color-border;
+  background: #07101d;
+  color: $color-muted;
 
-        a {
-            color: yellow;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    }
+  &__content {
+    min-height: 94px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  p { margin: 0; font-size: .82rem; }
+  a { color: $color-primary-light; font-weight: 700; }
+  a:hover { color: $color-text; }
+}
+
+@include mobile {
+  .site-footer__content { min-height: 110px; align-items: flex-start; justify-content: center; flex-direction: column; padding-block: 22px; }
 }
