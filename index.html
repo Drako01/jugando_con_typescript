@@ -1,147 +1,173 @@
 <!DOCTYPE html>
 <html lang="es-AR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Cursos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
+    <meta name="description" content="Laboratorio educativo de TypeScript y SASS: gestión de cursos, profesores, alumnos y categorías con DOM, módulos y localStorage.">
+    <title>TypeScript Lab | Gestión Académica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-
 <body>
-    <main>
-        <div class="container">
-            <h1>Gestión de Cursos</h1>
-            <h4>*Se recomienda genrear los datos en el Orden en que estan los Formularios</h4>
-            <hr>
-            <section class="form-section">
-
-                <!-- Formulario para agregar Categoria -->
-                <form id="categoriaForm">
-                    <h3>Agregar Categoria</h3>
-                    <div class="form-group">
-                        <label for="nombreCategoria">Nombre: (Ej: Programación, Diseño, Etc.)</label>
-                        <input type="text" id="nombreCategoria" required>
-                    </div>
-
-                    <button type="submit">Agregar Categoria</button>
-                </form>
-
-
-                <!-- Formulario para agregar Profesor -->
-                <form id="profesorForm">
-                    <h3>Agregar Profesor</h3>
-                    <div class="form-group">
-                        <label for="nombreProfesor">Nombre:</label>
-                        <input type="text" id="nombreProfesor" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellidoProfesor">Apellido:</label>
-                        <input type="text" id="apellidoProfesor" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dniProfesor">DNI:</label>
-                        <input type="number" id="dniProfesor" required min="1000000" max="99999999">
-                    </div>
-                    <div class="form-group">
-                        <label for="emailProfesor">Email:</label>
-                        <input type="email" id="emailProfesor" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaNacProfesor">Fecha de Nacimiento:</label>
-                        <input type="date" id="fechaNacProfesor" required>
-                    </div>
-
-                    <button type="submit">Agregar Profesor</button>
-                </form>
-
-
-                <!-- Formulario para agregar Curso -->
-                <form id="cursoForm">
-                    <h3>Agregar Curso</h3>
-                    <div class="form-group">
-                        <label for="nombreCurso">Nombre del Curso:</label>
-                        <input type="text" id="nombreCurso" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaInicioCurso">Fecha de Inicio:</label>
-                        <input type="date" id="fechaInicioCurso" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaFinCurso">Fecha de Finalización:</label>
-                        <input type="date" id="fechaFinCurso" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoriaCurso">Categoría del Curso: (Selecciona una)</label>
-                        <select id="categoriaCurso" required></select>
-                    </div>
-
-                    <!-- Select opcional para asignar profesor -->
-                    <div class="form-group">
-                        <label for="profesorCurso">Asignar Profesor (opcional):</label>
-                        <select id="profesorCurso"></select>
-                    </div>
-
-                    <button type="submit">Agregar Curso</button>
-                </form>
-
-
-                <!-- Formulario para agregar Alumno -->
-                <form id="alumnoForm">
-                    <h3>Agregar Alumno</h3>
-                    <div class="form-group">
-                        <label for="nombreAlumno">Nombre:</label>
-                        <input type="text" id="nombreAlumno" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellidoAlumno">Apellido:</label>
-                        <input type="text" id="apellidoAlumno" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dniAlumno">DNI:</label>
-                        <input type="number" id="dniAlumno" required min="1000000" max="99999999">
-                    </div>
-                    <div class="form-group">
-                        <label for="emailAlumno">Email:</label>
-                        <input type="email" id="emailAlumno" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaNacAlumno">Fecha de Nacimiento:</label>
-                        <input type="date" id="fechaNacAlumno" required>
-                    </div>
-                    <!-- Select opcional para asignar curso -->
-                    <div class="form-group">
-                        <label for="cursosAlumno">Inscribirse a Cursos (opcional):</label>
-                        <select multiple id="cursosAlumno">
-                            <option value="" disabled>Seleccione 1 o más Cursos</option>
-                        </select>
-                    </div>
-
-                    <button type="submit">Agregar Alumno</button>
-                </form>
-
-            </section>
-            <hr>
-            <h2>Visualización de los Resultados</h2>
-            <hr>
-            <section class="data-section">
-                <article id="data-section__alumnos" class="data-section__alumnos"></article>
-                <article id="data-section__profes" class="data-section__profes"></article>
-                <article id="data-section__cursos" class="data-section__cursos"></article>
-                <article id="data-section__categorias" class="data-section__categorias"></article>
-            </section>
+    <header class="site-header">
+        <div class="shell site-header__inner">
+            <a class="brand" href="#inicio" aria-label="Ir al inicio">
+                <span class="brand__mark">TS</span>
+                <span>
+                    <strong>TypeScript Lab</strong>
+                    <small>TypeScript + SASS</small>
+                </span>
+            </a>
+            <nav class="site-nav" aria-label="Navegación principal">
+                <a href="#formularios">Carga de datos</a>
+                <a href="#resultados">Resultados</a>
+                <a href="./README.md">Tutorial</a>
+            </nav>
         </div>
-    </main>
-    <footer id="footer">       
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
+    </header>
 
+    <main id="inicio">
+        <section class="hero">
+            <div class="shell hero__grid">
+                <div class="hero__content">
+                    <span class="eyebrow">Laboratorio educativo</span>
+                    <h1>Gestión académica construida con <span>TypeScript</span> y <span>SASS</span></h1>
+                    <p>
+                        Una aplicación práctica para aprender tipado, clases, módulos ES, DOM,
+                        persistencia con localStorage y arquitectura de estilos responsive con SASS.
+                    </p>
+                    <div class="hero__actions">
+                        <a class="button button--primary" href="#formularios">Comenzar laboratorio</a>
+                        <a class="button button--secondary" href="./docs/08-sass-profesional.md">Aprender SASS</a>
+                    </div>
+                </div>
+                <aside class="learning-card" aria-label="Tecnologías utilizadas">
+                    <p class="learning-card__label">Stack educativo</p>
+                    <div class="tech-list">
+                        <span><b>TS</b> TypeScript strict</span>
+                        <span><b>SCSS</b> SASS modular</span>
+                        <span><b>DOM</b> Browser APIs</span>
+                        <span><b>LS</b> localStorage</span>
+                    </div>
+                    <p class="learning-card__note">Sin framework de UI: los estilos de esta interfaz se construyen desde cero para que SASS también forme parte del aprendizaje.</p>
+                </aside>
+            </div>
+        </section>
+
+        <section class="workflow">
+            <div class="shell">
+                <div class="section-heading section-heading--compact">
+                    <span class="eyebrow">Flujo recomendado</span>
+                    <h2>Cargá la información en este orden</h2>
+                    <p>Las relaciones del ejemplo se entienden mejor siguiendo el flujo natural del dominio.</p>
+                </div>
+                <ol class="steps" aria-label="Orden recomendado de carga">
+                    <li><span>01</span><strong>Categoría</strong><small>Define el área temática.</small></li>
+                    <li><span>02</span><strong>Profesor</strong><small>Crea el docente disponible.</small></li>
+                    <li><span>03</span><strong>Curso</strong><small>Relaciona categoría y profesor.</small></li>
+                    <li><span>04</span><strong>Alumno</strong><small>Inscribe a uno o más cursos.</small></li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="formularios" class="workspace">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">01 · Entrada de datos</span>
+                    <h2>Gestión académica</h2>
+                    <p>Todos los datos se almacenan localmente en el navegador. Este proyecto es deliberadamente frontend para estudiar TypeScript sobre APIs reales del browser.</p>
+                </div>
+
+                <div class="form-grid">
+                    <form id="categoriaForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">01</span>
+                            <div><p>Catálogo</p><h3>Nueva categoría</h3></div>
+                        </div>
+                        <div class="field">
+                            <label for="nombreCategoria">Nombre de la categoría</label>
+                            <input type="text" id="nombreCategoria" placeholder="Ej. Desarrollo Backend" autocomplete="off" required>
+                        </div>
+                        <button class="button button--primary button--block" type="submit">Agregar categoría</button>
+                    </form>
+
+                    <form id="profesorForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">02</span>
+                            <div><p>Equipo docente</p><h3>Nuevo profesor</h3></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="nombreProfesor">Nombre</label><input type="text" id="nombreProfesor" placeholder="Nombre" required></div>
+                            <div class="field"><label for="apellidoProfesor">Apellido</label><input type="text" id="apellidoProfesor" placeholder="Apellido" required></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="dniProfesor">DNI</label><input type="number" id="dniProfesor" placeholder="Documento" required min="1000000" max="99999999"></div>
+                            <div class="field"><label for="fechaNacProfesor">Nacimiento</label><input type="date" id="fechaNacProfesor" required></div>
+                        </div>
+                        <div class="field"><label for="emailProfesor">Email</label><input type="email" id="emailProfesor" placeholder="profesor@example.com" autocomplete="email" required></div>
+                        <button class="button button--primary button--block" type="submit">Agregar profesor</button>
+                    </form>
+
+                    <form id="cursoForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">03</span>
+                            <div><p>Oferta académica</p><h3>Nuevo curso</h3></div>
+                        </div>
+                        <div class="field"><label for="nombreCurso">Nombre del curso</label><input type="text" id="nombreCurso" placeholder="Ej. TypeScript Profesional" required></div>
+                        <div class="field-grid">
+                            <div class="field"><label for="fechaInicioCurso">Fecha de inicio</label><input type="date" id="fechaInicioCurso" required></div>
+                            <div class="field"><label for="fechaFinCurso">Fecha de finalización</label><input type="date" id="fechaFinCurso" required></div>
+                        </div>
+                        <div class="field"><label for="categoriaCurso">Categoría</label><select id="categoriaCurso" required></select></div>
+                        <div class="field"><label for="profesorCurso">Profesor asignado</label><select id="profesorCurso"></select><small>Creá primero al profesor para verlo disponible.</small></div>
+                        <button class="button button--primary button--block" type="submit">Agregar curso</button>
+                    </form>
+
+                    <form id="alumnoForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">04</span>
+                            <div><p>Inscripciones</p><h3>Nuevo alumno</h3></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="nombreAlumno">Nombre</label><input type="text" id="nombreAlumno" placeholder="Nombre" required></div>
+                            <div class="field"><label for="apellidoAlumno">Apellido</label><input type="text" id="apellidoAlumno" placeholder="Apellido" required></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="dniAlumno">DNI</label><input type="number" id="dniAlumno" placeholder="Documento" required min="1000000" max="99999999"></div>
+                            <div class="field"><label for="fechaNacAlumno">Nacimiento</label><input type="date" id="fechaNacAlumno" required></div>
+                        </div>
+                        <div class="field"><label for="emailAlumno">Email</label><input type="email" id="emailAlumno" placeholder="alumno@example.com" autocomplete="email" required></div>
+                        <div class="field"><label for="cursosAlumno">Cursos</label><select multiple id="cursosAlumno"><option value="" disabled>Seleccione 1 o más cursos</option></select><small>Usá Ctrl/Cmd para seleccionar más de un curso.</small></div>
+                        <button class="button button--primary button--block" type="submit">Agregar alumno</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="resultados" class="results-section">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">02 · Salida de datos</span>
+                    <h2>Estado del laboratorio</h2>
+                    <p>Las tablas se renderizan desde TypeScript leyendo el estado persistido en localStorage.</p>
+                </div>
+                <div class="data-section">
+                    <article id="data-section__alumnos" class="data-panel"></article>
+                    <article id="data-section__profes" class="data-panel"></article>
+                    <article id="data-section__cursos" class="data-panel"></article>
+                    <article id="data-section__categorias" class="data-panel"></article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer" class="site-footer">
+        <div class="shell site-footer__content">
+            <p>Laboratorio educativo · TypeScript + SASS</p>
+        </div>
+    </footer>
     <script type="module" src="assets/js/index.js"></script>
 </body>
-
 </html>

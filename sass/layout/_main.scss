@@ -1,0 +1,52 @@
+@use '../base/variables' as *;
+@use '../base/mixins' as *;
+
+.shell { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+.eyebrow { display: inline-flex; margin-bottom: 12px; color: $color-primary-light; font-family: $font-mono; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+.hero { position: relative; overflow: hidden; padding: 96px 0 78px; background: radial-gradient(circle at 15% 15%, rgba($color-primary,.18), transparent 34%), radial-gradient(circle at 85% 30%, rgba($color-accent,.13), transparent 30%); }
+.hero::after { content: ''; position: absolute; inset: auto -10% -50% 35%; height: 440px; background: rgba($color-primary,.08); filter: blur(100px); border-radius: 50%; pointer-events: none; }
+.hero__grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr); gap: 64px; align-items: center; }
+.hero h1 { max-width: 780px; margin-bottom: 22px; font-size: clamp(2.55rem, 5.5vw, 5.4rem); line-height: .98; letter-spacing: -.055em; }
+.hero h1 span:first-of-type { color: $color-primary-light; }
+.hero h1 span:last-of-type { color: #e879b2; }
+.hero__content > p { max-width: 700px; color: $color-muted; font-size: 1.06rem; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+.learning-card { @include card-surface; padding: 28px; }
+.learning-card__label { margin-bottom: 18px; color: $color-muted; font-family: $font-mono; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+.learning-card__note { margin: 20px 0 0; color: $color-muted; font-size: .82rem; }
+.tech-list { display: grid; gap: 10px; }
+.tech-list span { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,.03); border: 1px solid $color-border; border-radius: $radius-sm; }
+.tech-list b { min-width: 48px; color: $color-primary-light; font-family: $font-mono; font-size: .72rem; }
+
+.workflow, .workspace, .results-section { padding: 78px 0; }
+.workflow { border-block: 1px solid $color-border; background: rgba(255,255,255,.015); }
+.section-heading { max-width: 760px; margin-bottom: 34px; }
+.section-heading--compact { margin-bottom: 28px; }
+.section-heading h2 { margin-bottom: 10px; font-size: clamp(1.8rem, 3vw, 2.6rem); letter-spacing: -.035em; }
+.section-heading p { margin-bottom: 0; color: $color-muted; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 0; margin: 0; list-style: none; }
+.steps li { padding: 20px; border: 1px solid $color-border; border-radius: $radius-md; background: rgba(255,255,255,.02); }
+.steps span, .steps strong, .steps small { display: block; }
+.steps span { color: $color-primary-light; font-family: $font-mono; font-size: .72rem; }
+.steps strong { margin-top: 12px; }
+.steps small { margin-top: 4px; color: $color-muted; }
+.results-section { background: #0a1525; }
+.data-section { display: grid; gap: 24px; }
+
+@include tablet {
+  .hero { padding-top: 70px; }
+  .hero__grid { grid-template-columns: 1fr; gap: 34px; }
+  .learning-card { max-width: 680px; }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@include mobile {
+  .shell { width: min(100% - 24px, 1180px); }
+  .hero { padding: 58px 0 54px; }
+  .hero h1 { font-size: clamp(2.25rem, 12vw, 3.6rem); }
+  .hero__actions { display: grid; }
+  .workflow, .workspace, .results-section { padding: 56px 0; }
+  .steps { grid-template-columns: 1fr; }
+}

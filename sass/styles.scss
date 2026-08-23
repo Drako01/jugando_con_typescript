@@ -1,0 +1,8 @@
+// Entry point SASS.
+// Cada responsabilidad vive en un partial y se compone con @use.
+@use 'base/reset';
+@use 'layout/header';
+@use 'layout/main';
+@use 'components/forms';
+@use 'components/tables';
+@use 'layout/footer';
