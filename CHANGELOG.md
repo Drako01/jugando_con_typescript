@@ -4,6 +4,47 @@ Todos los cambios relevantes del repositorio se documentan en este archivo.
 
 El proyecto utiliza [Semantic Versioning](https://semver.org/) como criterio de versionado del material.
 
+## [2.1.0] — Responsive UI + SASS Learning Edition
+
+### Added
+
+- rediseño visual completo de la aplicación educativa;
+- interfaz responsive para desktop, tablet y mobile;
+- navegación sticky y hero pedagógico;
+- flujo visual de carga Categoría → Profesor → Curso → Alumno;
+- cards de formularios reutilizables;
+- tablas responsive con scroll horizontal controlado;
+- estados visuales activo/inactivo;
+- focus states accesibles;
+- sistema de design tokens en SASS;
+- mixins de superficie, foco y breakpoints;
+- arquitectura SASS modular basada en `@use`;
+- tutorial completo `docs/08-sass-profesional.md`;
+- scripts `styles` y `styles:watch`;
+- compilación de TypeScript + SASS desde `npm run build`;
+- CSS compilado versionado para poder abrir el laboratorio como sitio estático.
+
+### Changed
+
+- aplicación reposicionada como laboratorio conjunto de TypeScript + SASS;
+- eliminación de la dependencia visual de Bootstrap en `index.html`;
+- formularios reorganizados semánticamente;
+- tablas generadas desde TypeScript con markup propio y accesible;
+- helpers de localStorage refactorizados y tipados;
+- sanitización básica del contenido renderizado en tablas;
+- generación de comisión con control de colisiones;
+- flujo de formularios sin recargas involuntarias;
+- refresco automático de selects y tablas después de cada alta;
+- `package.json` actualizado a v2.1.0.
+
+### Fixed
+
+- submit de Profesor y Categoría que podía recargar la página por falta de `preventDefault()`;
+- tablas que no reflejaban inmediatamente las altas nuevas;
+- ausencia de un contenedor responsive para datasets anchos;
+- SASS original con `_variables.scss` y `_header.scss` vacíos;
+- estilos demasiado dependientes de Bootstrap para un repositorio cuyo objetivo es enseñar frontend.
+
 ## [2.0.0] — Professional TypeScript Guide
 
 ### Added
@@ -44,11 +85,10 @@ El proyecto utiliza [Semantic Versioning](https://semver.org/) como criterio de 
 
 ### Preserved
 
-- aplicación original;
+- aplicación original y su dominio académico;
 - modelos `Alumno`, `Profesor`, `Curso` y `Categoria`;
 - ejemplos DOM;
 - persistencia con localStorage;
-- estilos e interfaz existentes;
 - licencia MIT original.
 
 ## [1.0.0]
