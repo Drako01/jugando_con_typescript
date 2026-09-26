@@ -92,3 +92,26 @@
 .brand--ats{gap:12px}
 .brand__logo{width:42px;height:42px;flex:0 0 42px;border-radius:12px}
 .brand--ats strong{letter-spacing:-.02em}
+
+
+/* Curriculum completo + escala visual alineada con index.html */
+.learning-shell{width:min(1180px,calc(100% - 40px))}
+.course-hero{padding:96px 0 78px}
+.course-hero__grid{grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:64px;align-items:center}
+.course-hero h1{max-width:780px;font-size:clamp(2.55rem,5.5vw,5.4rem);line-height:.98}
+.lesson h2{font-size:clamp(1.8rem,3vw,2.6rem)}
+.learning-page--practice{--course:#a78bfa}
+.learning-path-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.path-card--practice .path-card__code{background:linear-gradient(135deg,#3178c6,#cf649a)}
+.path-card--practice:hover{border-color:rgba(167,139,250,.55)}
+.path-card--practice strong{color:#c4b5fd}
+.concept-map{padding:78px 0;border-bottom:1px solid rgba(148,163,184,.18)}
+.concept-map__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.concept-map__grid article{padding:20px;border:1px solid rgba(148,163,184,.18);border-radius:16px;background:rgba(255,255,255,.02)}
+.concept-map__grid span{display:block;margin-bottom:8px;color:#60a5fa;font:700 .68rem "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.08em}
+.concept-map__grid strong{display:block;margin-bottom:8px}
+.concept-map__grid p{margin:0;color:#91a0b8;font-size:.86rem}
+.learning-footer a{color:var(--course);font-weight:700}
+.learning-footer a:hover{color:#fff}
+@media(max-width:900px){.course-hero{padding-top:70px}.course-hero__grid{grid-template-columns:1fr;gap:34px}.learning-path-grid{grid-template-columns:1fr}.concept-map__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.learning-shell{width:min(100% - 24px,1180px)}.course-hero{padding:58px 0 54px}.course-hero h1{font-size:clamp(2.25rem,12vw,3.6rem)}.concept-map{padding:56px 0}.concept-map__grid{grid-template-columns:1fr}}

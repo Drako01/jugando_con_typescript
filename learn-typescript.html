@@ -53,6 +53,11 @@
     <a href="#ts-05" data-lesson-link="ts-05"><span>05</span>Genéricos y utilities</a>
     <a href="#ts-06" data-lesson-link="ts-06"><span>06</span>DOM y módulos</a>
     <a href="#ts-07" data-lesson-link="ts-07"><span>07</span>Arquitectura real</a>
+    <a href="#ts-08" data-lesson-link="ts-08"><span>08</span>Strict y tsconfig</a>
+    <a href="#ts-09" data-lesson-link="ts-09"><span>09</span>Clases y dominio</a>
+    <a href="#ts-10" data-lesson-link="ts-10"><span>10</span>Async y errores</a>
+    <a href="#ts-11" data-lesson-link="ts-11"><span>11</span>Boundaries y DTOs</a>
+    <a href="#ts-12" data-lesson-link="ts-12"><span>12</span>TypeScript profesional</a>
   </nav>
 </aside>
 
@@ -192,6 +197,85 @@ form?.addEventListener("submit", (event) => {
 assets/js/        # salida compilada
 docs/             # teoría complementaria</code></pre></div>
   <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint final</span><p>¿Dónde debería vivir una regla como “un curso no termina antes de empezar”?</p><div class="quiz-options"><button class="quiz-option" data-answer="true">En lógica de dominio reutilizable</button><button class="quiz-option" data-answer="false">Sólo dentro del click de un botón</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+
+<section class="lesson" id="ts-08" data-lesson="ts-08">
+  <div class="lesson__meta">Módulo 08 · Configuración</div>
+  <h2><code>strict</code>, <code>tsconfig</code> y un compilador que cuide el contrato</h2>
+  <p>TypeScript gana valor cuando la configuración acompaña. <code>strict</code> debería ser el baseline en proyectos nuevos. Opciones más exigentes pueden incorporarse cuando el equipo está preparado.</p>
+  <div class="code-block"><div class="code-block__header"><span>tsconfig.json</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "strict": true,
+    "noEmitOnError": true
+  }
+}</code></pre></div>
+  <div class="lesson-grid"><article class="concept-card"><strong>strictNullChecks</strong><p>Obliga a contemplar null y undefined.</p></article><article class="concept-card"><strong>noEmitOnError</strong><p>Evita generar JavaScript con el contrato roto.</p></article></div>
+  <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint</span><p>¿Qué opción evita emitir JavaScript si hay errores?</p><div class="quiz-options"><button class="quiz-option" data-answer="true">noEmitOnError</button><button class="quiz-option" data-answer="false">skipLibCheck</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="ts-09" data-lesson="ts-09">
+  <div class="lesson__meta">Módulo 09 · Dominio</div>
+  <h2>Clases, composición e invariantes</h2>
+  <p>Una clase tiene sentido cuando agrupa estado y comportamiento. Para datos transportables, una interface suele ser suficiente. Las reglas del dominio deben vivir donde puedan reutilizarse, no dentro de un click.</p>
+  <div class="code-block"><div class="code-block__header"><span>Curso.ts</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>class Curso {
+  private alumnos = new Set&lt;string&gt;();
+
+  constructor(public readonly id: number, public nombre: string) {}
+
+  inscribir(alumnoId: string): void {
+    this.alumnos.add(alumnoId);
+  }
+
+  get cantidadAlumnos(): number {
+    return this.alumnos.size;
+  }
+}</code></pre></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="ts-10" data-lesson="ts-10">
+  <div class="lesson__meta">Módulo 10 · Asincronía</div>
+  <h2>Promises, async/await y errores seguros</h2>
+  <p>Toda función async devuelve una Promise. El tipo expresa qué valor resolverá, pero los fallos de red y runtime siguen existiendo. En catch, refiná <code>unknown</code> antes de usarlo.</p>
+  <div class="code-block"><div class="code-block__header"><span>api.ts</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>async function cargarCurso(id: number): Promise&lt;CursoDTO&gt; {
+  const response = await fetch(`/api/cursos/${id}`);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json() as Promise&lt;CursoDTO&gt;;
+}
+
+try {
+  await cargarCurso(1);
+} catch (error: unknown) {
+  if (error instanceof Error) console.error(error.message);
+}</code></pre></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="ts-11" data-lesson="ts-11">
+  <div class="lesson__meta">Módulo 11 · Fronteras</div>
+  <h2>APIs, localStorage, DTOs y validación runtime</h2>
+  <p>Los datos externos son <code>unknown</code> hasta validarlos. Un cast con <code>as</code> no valida. APIs, JSON, storage y formularios son boundaries que requieren comprobación explícita.</p>
+  <div class="code-block"><div class="code-block__header"><span>type guard</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>interface CursoDTO {
+  id: number;
+  nombre: string;
+}
+
+function isCursoDTO(value: unknown): value is CursoDTO {
+  if (typeof value !== "object" || value === null) return false;
+  const item = value as Record&lt;string, unknown&gt;;
+  return typeof item.id === "number"
+    && typeof item.nombre === "string";
+}</code></pre></div>
+  <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint</span><p>¿Un cast con <code>as</code> valida datos externos?</p><div class="quiz-options"><button class="quiz-option" data-answer="false">Sí</button><button class="quiz-option" data-answer="true">No</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="ts-12" data-lesson="ts-12">
+  <div class="lesson__meta">Módulo 12 · Criterio profesional</div>
+  <h2>TypeScript maduro: menos magia, mejores contratos</h2>
+  <p>La madurez no se mide por usar tipos complejos. Se mide por contratos claros, inferencia bien aprovechada, boundaries validados, poco <code>any</code>, estados imposibles eliminados y CI que impide regresiones.</p>
+  <div class="lesson-grid"><article class="concept-card"><strong>unknown antes que any</strong><p>Preserva seguridad en los bordes.</p></article><article class="concept-card"><strong>Estados válidos</strong><p>Las discriminated unions evitan combinaciones contradictorias.</p></article><article class="concept-card"><strong>Tests siguen siendo necesarios</strong><p>Los tipos no prueban comportamiento.</p></article><article class="concept-card"><strong>CI</strong><p>Typecheck, tests y build deben ser reproducibles.</p></article></div>
   <button class="lesson-complete" data-complete>Marcar como completado</button>
 </section>
 
