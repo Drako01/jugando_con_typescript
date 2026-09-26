@@ -968,3 +968,63 @@ La experiencia publicada incluye dos rutas web de aprendizaje, además de la doc
 - Los documentos de `docs/` siguen funcionando como material de referencia ampliado.
 
 El botón **Aprender SASS** ya no navega al Markdown crudo: abre la experiencia interactiva.
+
+
+## Learning Platform v2
+
+La rama `feat/learning-platform-v2` evoluciona el repositorio desde una guía interactiva hacia una plataforma de aprendizaje estática y autocontenida.
+
+### Experiencia de aprendizaje
+
+- Dashboard con progreso global y por ruta.
+- “Continuar aprendiendo” desde el último módulo visitado.
+- 12 módulos de TypeScript.
+- 12 módulos de SASS.
+- 8 desafíos prácticos.
+- Roadmap por niveles: Fundamentos, Intermedio, Avanzado y Profesional.
+- Tiempo estimado y objetivos por módulo.
+- Bookmarks persistidos en `localStorage`.
+- Buscador global de módulos y glosario.
+- Buscador interno por curso.
+- Proyectos finales de TypeScript y SASS.
+- Desafío integrador.
+- Progreso persistente sin backend.
+
+### Laboratorio mejorado
+
+- Datos demo para comenzar a practicar inmediatamente.
+- Reset seguro mediante `<dialog>`, sin `alert()` ni `confirm()`.
+- Inspector educativo de `localStorage`.
+- Toasters para éxito, errores y validaciones.
+- Estados vacíos explicativos.
+- Eliminación de registros con actualización de relaciones dependientes.
+- Actualización de estados booleanos desde las tablas.
+- Mapa conceptual entre el CRUD y los conceptos estudiados.
+
+### Arquitectura
+
+El catálogo educativo está centralizado en:
+
+`type/learning/catalog.ts`
+
+La capa de producto y progreso está en:
+
+`type/platform.ts`
+
+Los estilos específicos de plataforma están en:
+
+`sass/components/_platform.scss`
+
+La salida sigue siendo 100% estática y compatible con GitHub Pages.
+
+### Desarrollo
+
+Después de actualizar la rama:
+
+```bash
+npm ci
+npm run typecheck
+npm run build
+```
+
+El build genera JavaScript y CSS en `assets/`.
