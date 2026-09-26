@@ -26,8 +26,10 @@ if (course) {
         const percentage = total ? Math.round((done / total) * 100) : 0;
         if (bar)
             bar.style.width = `${percentage}%`;
-        if (label)
-            label.textContent = `${done} de ${total} módulos completados · ${percentage}%`;
+        if (label) {
+            const unit = course === 'practice' ? 'desafíos completados' : 'módulos completados';
+            label.textContent = `${done} de ${total} ${unit} · ${percentage}%`;
+        }
         lessons.forEach((lesson) => {
             const id = lesson.dataset.lesson;
             if (!id)
