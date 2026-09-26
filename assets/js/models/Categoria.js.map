@@ -1,0 +1,1 @@
+{"version":3,"file":"Categoria.js","sourceRoot":"","sources":["../../../type/models/Categoria.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,SAAS;IAClB,EAAE,CAAS;IACX,SAAS,CAAS;IAElB,YACI,EAAU,EACV,SAAiB;QAEjB,IAAI,CAAC,EAAE,GAAG,EAAE,CAAC;QACb,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;IAC/B,CAAC;IAED,eAAe;QACX,OAAO,cAAc,IAAI,CAAC,SAAS,uBAAuB,CAAC;IAC/D,CAAC;CACJ"}

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laboratorio educativo de TypeScript y SASS: gestión de cursos, profesores, alumnos y categorías con DOM, módulos y localStorage.">
+    <title>TypeScript Lab | Gestión Académica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="shell site-header__inner">
+            <a class="brand brand--ats" href="#inicio" aria-label="ArmoTuSitio.com Lab - ir al inicio">
+                <img class="brand__logo" src="./assets/img/armotusitio-logo.svg" alt="" width="42" height="42">
+                <span>
+                    <strong>ArmoTuSitio.com Lab</strong>
+                    <small>TypeScript + SASS</small>
+                </span>
+            </a>
+            <nav class="site-nav" aria-label="Navegación principal">
+                <a href="#dashboard">Dashboard</a>
+                <a href="#campus">Rutas</a>
+                <a href="#formularios">Laboratorio</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="inicio">
+        <section class="hero">
+            <div class="shell hero__grid">
+                <div class="hero__content">
+                    <span class="eyebrow">Plataforma de aprendizaje · ArmoTuSitio.com Lab</span>
+                    <h1>Aprendé <span>TypeScript</span> y <span>SASS</span> construyendo software real.</h1>
+                    <p>
+                        Un recorrido práctico con teoría, checkpoints, desafíos y un laboratorio real.
+                        Avanzá desde fundamentos hasta criterio profesional sin separar aprendizaje de implementación.
+                    </p>
+                    <div class="hero__actions">
+                        <a class="button button--primary" data-continue="typescript" href="./learn-typescript.html">Continuar aprendiendo</a>
+                        <a class="button button--secondary" href="#campus">Explorar rutas</a>
+                        <a class="button button--secondary" href="#formularios">Abrir laboratorio</a>
+                    </div>
+                </div>
+                <aside class="learning-card learning-card--journey" aria-label="Resumen de la plataforma">
+                    <p class="learning-card__label">Tu recorrido</p>
+                    <div class="journey-stats">
+                        <span><strong>24</strong><small>Módulos</small></span>
+                        <span><strong>8</strong><small>Desafíos</small></span>
+                        <span><strong>1</strong><small>Laboratorio</small></span>
+                    </div>
+                    <div class="journey-progress">
+                        <div><span>Progreso global</span><strong data-global-progress>0%</strong></div>
+                        <div class="progress-track"><div class="progress-track__bar" data-global-progress-bar></div></div>
+                        <small><span data-global-completed>0 / 32</span> unidades completadas</small>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+
+        <section id="dashboard" class="platform-dashboard">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Tu aprendizaje</span>
+                    <h2>Seguí desde donde lo dejaste</h2>
+                    <p>El progreso, los módulos guardados y el último punto visitado quedan en este navegador.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <article class="progress-card progress-card--typescript">
+                        <div class="progress-card__top"><span>Ruta</span><strong>TypeScript</strong></div>
+                        <div class="progress-card__metric"><strong data-course-progress="typescript">0%</strong><span data-course-completed="typescript">0 de 12</span></div>
+                        <div class="progress-track"><div class="progress-track__bar" data-course-progress-bar="typescript"></div></div>
+                        <a data-continue="typescript" href="./learn-typescript.html">Continuar ruta →</a>
+                    </article>
+
+                    <article class="progress-card progress-card--sass">
+                        <div class="progress-card__top"><span>Ruta</span><strong>SASS</strong></div>
+                        <div class="progress-card__metric"><strong data-course-progress="sass">0%</strong><span data-course-completed="sass">0 de 12</span></div>
+                        <div class="progress-track"><div class="progress-track__bar" data-course-progress-bar="sass"></div></div>
+                        <a data-continue="sass" href="./learn-sass.html">Continuar ruta →</a>
+                    </article>
+
+                    <article class="progress-card progress-card--practice">
+                        <div class="progress-card__top"><span>Práctica</span><strong>Desafíos</strong></div>
+                        <div class="progress-card__metric"><strong data-course-progress="practice">0%</strong><span data-course-completed="practice">0 de 8</span></div>
+                        <div class="progress-track"><div class="progress-track__bar" data-course-progress-bar="practice"></div></div>
+                        <a data-continue="practice" href="./practice.html">Continuar desafíos →</a>
+                    </article>
+                </div>
+
+                <div class="learning-tools">
+                    <section class="learning-search-card">
+                        <div class="tool-heading">
+                            <span>Buscar</span>
+                            <h3>Encontrá un concepto o módulo</h3>
+                            <p>Buscá en las 24 lecciones y el glosario. Atajo: <kbd>/</kbd></p>
+                        </div>
+                        <div class="learning-search">
+                            <input type="search" data-learning-search placeholder="Ej. unknown, async, mixins, design tokens…" aria-label="Buscar en el campus">
+                            <div class="search-results" data-search-results aria-live="polite"></div>
+                        </div>
+                    </section>
+
+                    <section class="bookmarks-card">
+                        <div class="tool-heading">
+                            <span>Repaso</span>
+                            <h3>Mis guardados</h3>
+                            <p>Guardá módulos mientras estudiás y armá tu propia lista de repaso.</p>
+                        </div>
+                        <div class="bookmarks-list" data-bookmarks></div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <section class="workflow">
+            <div class="shell">
+                <div class="section-heading section-heading--compact">
+                    <span class="eyebrow">Flujo recomendado</span>
+                    <h2>Cargá la información en este orden</h2>
+                    <p>Las relaciones del ejemplo se entienden mejor siguiendo el flujo natural del dominio.</p>
+                </div>
+                <ol class="steps" aria-label="Orden recomendado de carga">
+                    <li><span>01</span><strong>Categoría</strong><small>Define el área temática.</small></li>
+                    <li><span>02</span><strong>Profesor</strong><small>Crea el docente disponible.</small></li>
+                    <li><span>03</span><strong>Curso</strong><small>Relaciona categoría y profesor.</small></li>
+                    <li><span>04</span><strong>Alumno</strong><small>Inscribe a uno o más cursos.</small></li>
+                </ol>
+            </div>
+        </section>
+
+
+        <section id="campus" class="learning-paths" aria-labelledby="learning-paths-title">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Campus interactivo</span>
+                    <h2 id="learning-paths-title">Tres rutas para entender el proyecto de verdad</h2>
+                    <p>No son apuntes estáticos: avanzá módulo por módulo, probá checkpoints y guardá tu progreso en el navegador.</p>
+                </div>
+                <div class="learning-path-grid">
+                    <a class="path-card path-card--typescript" href="./learn-typescript.html">
+                        <span class="path-card__code">TS</span>
+                        <div>
+                            <span class="path-card__eyebrow">12 módulos · progresivo</span>
+                            <h3>Aprender TypeScript</h3>
+                            <p>Tipos, contratos, funciones, narrowing, genéricos, DOM y arquitectura aplicados al laboratorio real.</p>
+                            <strong>Empezar ruta <span aria-hidden="true">→</span></strong>
+                        </div>
+                    </a>
+                    <a class="path-card path-card--sass" href="./learn-sass.html">
+                        <span class="path-card__code">SCSS</span>
+                        <div>
+                            <span class="path-card__eyebrow">12 módulos · práctico</span>
+                            <h3>Aprender SASS</h3>
+                            <p>Variables, nesting, módulos, mixins, responsive, arquitectura y build con ejemplos que podés copiar.</p>
+                            <strong>Empezar ruta <span aria-hidden="true">→</span></strong>
+                        </div>
+                    </a>
+                    <a class="path-card path-card--practice" href="./practice.html">
+                        <span class="path-card__code">LAB</span>
+                        <div>
+                            <span class="path-card__eyebrow">8 desafíos · aplicado</span>
+                            <h3>Modo práctica</h3>
+                            <p>Resolvé problemas de tipado, DOM, persistencia, nesting, tokens, responsive y arquitectura.</p>
+                            <strong>Resolver desafíos <span aria-hidden="true">→</span></strong>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="concept-map">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Aprender sobre código real</span>
+                    <h2>El laboratorio también forma parte del curso</h2>
+                    <p>Cada bloque del CRUD existe para que puedas reconocer conceptos concretos de TypeScript, Browser APIs y SASS en una aplicación funcionando.</p>
+                </div>
+                <div class="concept-map__grid">
+                    <article><span>TypeScript</span><strong>Modelos</strong><p>Alumno, Profesor, Curso y Categoría muestran contratos, clases y relaciones.</p></article>
+                    <article><span>Browser API</span><strong>DOM</strong><p>Formularios, eventos y selectores muestran acceso tipado a elementos reales.</p></article>
+                    <article><span>Persistencia</span><strong>localStorage</strong><p>Permite estudiar serialización, boundaries y rehidratación.</p></article>
+                    <article><span>SASS</span><strong>Sistema visual</strong><p>Tokens, partials, mixins y componentes construyen toda la interfaz.</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section id="formularios" class="workspace">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">01 · Entrada de datos</span>
+                    <h2>Gestión académica</h2>
+                    <p>Todos los datos se almacenan localmente en el navegador. Este proyecto es deliberadamente frontend para estudiar TypeScript sobre APIs reales del browser.</p>
+                </div>
+
+                <div class="lab-toolbar" aria-label="Herramientas del laboratorio">
+                    <div>
+                        <span class="eyebrow">Herramientas de práctica</span>
+                        <h3>Experimentá sin miedo</h3>
+                        <p>Cargá un escenario demo, inspeccioná qué guarda el navegador o reiniciá el laboratorio.</p>
+                    </div>
+                    <div class="lab-toolbar__actions">
+                        <button class="button button--secondary" type="button" data-lab-seed>Cargar datos demo</button>
+                        <button class="button button--secondary" type="button" data-lab-inspect>Inspeccionar storage</button>
+                        <button class="button button--danger" type="button" data-lab-reset>Reiniciar laboratorio</button>
+                    </div>
+                </div>
+
+                <div class="lab-concepts" aria-label="Conceptos aplicados en el laboratorio">
+                    <span>Clases</span><span>DOM tipado</span><span>Eventos</span><span>localStorage</span><span>Serialización</span><span>SASS modular</span>
+                </div>
+
+                <div class="form-grid">
+                    <form id="categoriaForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">01</span>
+                            <div><p>Catálogo</p><h3>Nueva categoría</h3></div>
+                        </div>
+                        <div class="field">
+                            <label for="nombreCategoria">Nombre de la categoría</label>
+                            <input type="text" id="nombreCategoria" placeholder="Ej. Desarrollo Backend" autocomplete="off" required>
+                        </div>
+                        <button class="button button--primary button--block" type="submit">Agregar categoría</button>
+                    </form>
+
+                    <form id="profesorForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">02</span>
+                            <div><p>Equipo docente</p><h3>Nuevo profesor</h3></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="nombreProfesor">Nombre</label><input type="text" id="nombreProfesor" placeholder="Nombre" required></div>
+                            <div class="field"><label for="apellidoProfesor">Apellido</label><input type="text" id="apellidoProfesor" placeholder="Apellido" required></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="dniProfesor">DNI</label><input type="number" id="dniProfesor" placeholder="Documento" required min="1000000" max="99999999"></div>
+                            <div class="field"><label for="fechaNacProfesor">Nacimiento</label><input type="date" id="fechaNacProfesor" required></div>
+                        </div>
+                        <div class="field"><label for="emailProfesor">Email</label><input type="email" id="emailProfesor" placeholder="profesor@example.com" autocomplete="email" required></div>
+                        <button class="button button--primary button--block" type="submit">Agregar profesor</button>
+                    </form>
+
+                    <form id="cursoForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">03</span>
+                            <div><p>Oferta académica</p><h3>Nuevo curso</h3></div>
+                        </div>
+                        <div class="field"><label for="nombreCurso">Nombre del curso</label><input type="text" id="nombreCurso" placeholder="Ej. TypeScript Profesional" required></div>
+                        <div class="field-grid">
+                            <div class="field"><label for="fechaInicioCurso">Fecha de inicio</label><input type="date" id="fechaInicioCurso" required></div>
+                            <div class="field"><label for="fechaFinCurso">Fecha de finalización</label><input type="date" id="fechaFinCurso" required></div>
+                        </div>
+                        <div class="field"><label for="categoriaCurso">Categoría</label><select id="categoriaCurso" required></select></div>
+                        <div class="field"><label for="profesorCurso">Profesor asignado</label><select id="profesorCurso"></select><small>Creá primero al profesor para verlo disponible.</small></div>
+                        <button class="button button--primary button--block" type="submit">Agregar curso</button>
+                    </form>
+
+                    <form id="alumnoForm" class="form-card">
+                        <div class="form-card__header">
+                            <span class="form-card__icon">04</span>
+                            <div><p>Inscripciones</p><h3>Nuevo alumno</h3></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="nombreAlumno">Nombre</label><input type="text" id="nombreAlumno" placeholder="Nombre" required></div>
+                            <div class="field"><label for="apellidoAlumno">Apellido</label><input type="text" id="apellidoAlumno" placeholder="Apellido" required></div>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field"><label for="dniAlumno">DNI</label><input type="number" id="dniAlumno" placeholder="Documento" required min="1000000" max="99999999"></div>
+                            <div class="field"><label for="fechaNacAlumno">Nacimiento</label><input type="date" id="fechaNacAlumno" required></div>
+                        </div>
+                        <div class="field"><label for="emailAlumno">Email</label><input type="email" id="emailAlumno" placeholder="alumno@example.com" autocomplete="email" required></div>
+                        <div class="field"><label for="cursosAlumno">Cursos</label><select multiple id="cursosAlumno"><option value="" disabled>Seleccione 1 o más cursos</option></select><small>Usá Ctrl/Cmd para seleccionar más de un curso.</small></div>
+                        <button class="button button--primary button--block" type="submit">Agregar alumno</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <aside class="storage-inspector" data-storage-inspector hidden aria-live="polite">
+            <div class="storage-inspector__header">
+                <div><span class="eyebrow">Inspector educativo</span><h2>Estado de localStorage</h2></div>
+                <button type="button" class="icon-button" data-storage-close aria-label="Cerrar inspector">×</button>
+            </div>
+            <p>Esto es lo que realmente persiste el laboratorio. JSON no conserva métodos ni prototipos de las clases.</p>
+            <pre><code data-storage-json>{}</code></pre>
+        </aside>
+
+        <section id="resultados" class="results-section">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">02 · Salida de datos</span>
+                    <h2>Estado del laboratorio</h2>
+                    <p>Las tablas se renderizan desde TypeScript leyendo el estado persistido en localStorage.</p>
+                </div>
+                <div class="data-section">
+                    <article id="data-section__alumnos" class="data-panel"></article>
+                    <article id="data-section__profes" class="data-panel"></article>
+                    <article id="data-section__cursos" class="data-panel"></article>
+                    <article id="data-section__categorias" class="data-panel"></article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer" class="site-footer">
+        <div class="shell site-footer__content">
+            <p>Laboratorio educativo · TypeScript + SASS</p>
+            <p>Desarrollado por <a href="https://armotusitio.com.ar/" target="_blank" rel="noopener noreferrer">ArmoTuSitio.com</a></p>
+        </div>
+    </footer>
+    <dialog class="confirm-dialog" data-reset-dialog>
+        <form method="dialog">
+            <span class="eyebrow">Acción destructiva</span>
+            <h2>¿Reiniciar el laboratorio?</h2>
+            <p>Se eliminarán categorías, profesores, cursos y alumnos guardados en este navegador. El progreso de aprendizaje no se toca.</p>
+            <div class="confirm-dialog__actions">
+                <button class="button button--secondary" value="cancel">Cancelar</button>
+                <button class="button button--danger" value="confirm" data-reset-confirm>Reiniciar</button>
+            </div>
+        </form>
+    </dialog>
+    <div class="toast-region" data-toast-region aria-live="polite" aria-atomic="true"></div>
+    <script type="module" src="assets/js/platform.js"></script>
+    <script type="module" src="assets/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+@use 'variables' as *;
+
+@mixin focus-ring {
+  outline: 3px solid rgba($color-primary-light, 0.28);
+  outline-offset: 2px;
+}
+
+@mixin card-surface {
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015)), $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+}
+
+@mixin tablet {
+  @media (max-width: $bp-tablet) { @content; }
+}
+
+@mixin mobile {
+  @media (max-width: $bp-mobile) { @content; }
+}
