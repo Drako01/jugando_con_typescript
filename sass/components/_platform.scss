@@ -454,3 +454,31 @@ a.search-result:hover,
   .confirm-dialog__actions { display: grid; }
   .toast-region { right: 12px; bottom: 12px; width: calc(100% - 24px); }
 }
+
+
+.table-actions { width: 1%; white-space: nowrap; }
+.table-action {
+  min-height: 32px;
+  padding: 6px 9px;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: rgba(255,255,255,.025);
+  color: $color-text;
+  font-size: .7rem;
+  font-weight: 700;
+}
+.table-action--danger { color: #fecdd3; border-color: rgba($color-danger,.28); }
+.table-action--danger:hover { background: rgba($color-danger,.1); border-color: rgba($color-danger,.58); }
+
+.learning-nav {
+  max-width: 70vw;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+.learning-nav::-webkit-scrollbar { display: none; }
+
+@media (max-width: 640px) {
+  .learning-nav { max-width: 58vw; gap: 6px; }
+  .learning-nav a { flex: 0 0 auto; }
+}
