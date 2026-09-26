@@ -482,3 +482,28 @@ a.search-result:hover,
   .learning-nav { max-width: 58vw; gap: 6px; }
   .learning-nav a { flex: 0 0 auto; }
 }
+
+
+.course-roadmap {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 7px;
+  margin: 0 0 16px;
+
+  a {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 10px;
+    border: 1px solid $color-border;
+    border-radius: 9px;
+    background: rgba(255,255,255,.018);
+  }
+
+  span { color: $color-muted; font-size: .68rem; }
+  strong { color: var(--course); font-family: $font-mono; font-size: .68rem; }
+}
+
+@include mobile {
+  .course-roadmap { grid-template-columns: 1fr 1fr; }
+}
