@@ -45,9 +45,17 @@ jobs:
           rsync -a ./ _site/ \
             --exclude='.git/' \
             --exclude='.github/' \
+            --exclude='.gitignore' \
             --exclude='node_modules/' \
             --exclude='_site/'
           touch _site/.nojekyll
+
+      - name: Verify deploy assets
+        run: |
+          test -f _site/assets/css/styles.css
+          test -f _site/assets/js/index.js
+          test -f _site/assets/js/tutorial.js
+          echo "Deploy assets verified"
 
       - name: Deploy snapshot to gh-pages
         uses: peaceiris/actions-gh-pages@v4
