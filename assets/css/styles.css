@@ -86,3 +86,8 @@
 .path-card--sass strong{color:#e879b2}
 @media(max-width:900px){.learning-path-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.learning-paths{padding:56px 0}.path-card{grid-template-columns:1fr;padding:22px}.path-card__code{width:56px;height:56px}}
+
+
+.brand--ats{gap:12px}
+.brand__logo{width:42px;height:42px;flex:0 0 42px;border-radius:12px}
+.brand--ats strong{letter-spacing:-.02em}
