@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tutorial interactivo de SASS: variables, nesting, partials, módulos, mixins, responsive y arquitectura profesional.">
+  <title>Aprender SASS | TypeScript Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="learning-page learning-page--sass" data-course="sass">
+<header class="site-header">
+  <div class="learning-shell site-header__inner">
+    <a class="brand" href="./index.html" aria-label="Volver al laboratorio">
+      <span class="brand__mark">TS</span>
+      <span><strong>TypeScript Lab</strong><small>Campus práctico</small></span>
+    </a>
+    <nav class="learning-nav" aria-label="Cursos">
+      <a href="./index.html">Laboratorio</a>
+      <a href="./learn-typescript.html">TypeScript</a>
+      <a href="./learn-sass.html" aria-current="page">SASS</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="course-hero">
+  <div class="learning-shell course-hero__grid">
+    <div>
+      <span class="course-badge">Ruta práctica · SASS</span>
+      <h1>Aprendé <span>SASS</span> construyendo estilos que escalan.</h1>
+      <p class="course-hero__lead">Una ruta de cero a arquitectura modular: entendé por qué existe SASS, cómo organizar un proyecto real y cuándo conviene usar cada herramienta sin convertir el CSS en magia difícil de mantener.</p>
+    </div>
+    <aside class="course-progress-card" aria-label="Progreso del curso">
+      <strong>Tu progreso</strong>
+      <span data-progress-label>0 módulos completados</span>
+      <div class="progress-track" aria-hidden="true"><div class="progress-track__bar" data-progress-bar></div></div>
+      <span>Se guarda automáticamente en este navegador.</span>
+    </aside>
+  </div>
+</section>
+
+<div class="learning-shell learning-layout">
+<aside class="lesson-sidebar">
+  <p class="lesson-sidebar__title">Ruta de aprendizaje</p>
+  <nav class="lesson-nav" aria-label="Módulos de SASS">
+    <a href="#sass-01" data-lesson-link="sass-01"><span>01</span>Qué resuelve SASS</a>
+    <a href="#sass-02" data-lesson-link="sass-02"><span>02</span>Variables y nesting</a>
+    <a href="#sass-03" data-lesson-link="sass-03"><span>03</span>Partials y módulos</a>
+    <a href="#sass-04" data-lesson-link="sass-04"><span>04</span>Mixins y funciones</a>
+    <a href="#sass-05" data-lesson-link="sass-05"><span>05</span>Responsive</a>
+    <a href="#sass-06" data-lesson-link="sass-06"><span>06</span>Arquitectura</a>
+    <a href="#sass-07" data-lesson-link="sass-07"><span>07</span>Build profesional</a>
+  </nav>
+</aside>
+
+<div class="lesson-content">
+<section class="lesson" id="sass-01" data-lesson="sass-01">
+  <div class="lesson__meta">Módulo 01 · Fundamentos</div>
+  <h2>Qué resuelve SASS y qué no</h2>
+  <p>SASS es un preprocesador: escribís SCSS y una herramienta lo transforma en CSS que entiende el navegador. Su valor aparece cuando necesitás reutilizar decisiones de diseño, separar responsabilidades y reducir repetición.</p>
+  <div class="lesson-grid">
+    <article class="concept-card"><strong>SCSS no llega al navegador</strong><p>El browser recibe CSS compilado. El build forma parte del producto.</p></article>
+    <article class="concept-card"><strong>No reemplaza CSS</strong><p>Seguís necesitando dominar cascade, especificidad, layout y responsive.</p></article>
+  </div>
+  <div class="code-block"><div class="code-block__header"><span>SCSS → CSS</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>$brand: #cf649a;
+
+.button {
+  background: $brand;
+  &:hover { filter: brightness(1.1); }
+}</code></pre></div>
+  <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint</span><p>¿Quién interpreta finalmente los estilos?</p><div class="quiz-options"><button class="quiz-option" data-answer="false">El navegador interpreta SCSS directamente</button><button class="quiz-option" data-answer="true">El navegador interpreta el CSS generado</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+<section class="lesson" id="sass-02" data-lesson="sass-02">
+  <div class="lesson__meta">Módulo 02 · Lenguaje</div>
+  <h2>Variables, nesting y decisiones reutilizables</h2>
+  <p>Las variables representan decisiones del sistema visual. El nesting ayuda a expresar relaciones, pero debe mantenerse poco profundo para evitar selectores demasiado específicos.</p>
+  <div class="code-block"><div class="code-block__header"><span>tokens.scss</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>$color-primary: #3178c6;
+$space-md: 1rem;
+$radius: .75rem;
+
+.card {
+  padding: $space-md;
+  border-radius: $radius;
+
+  &__title { color: $color-primary; }
+  &:hover { transform: translateY(-2px); }
+}</code></pre></div>
+  <div class="lesson-grid"><article class="concept-card"><strong>Usá variables para intención</strong><p><code>$color-primary</code> comunica mejor que <code>$blue-500</code> cuando representa una decisión de producto.</p></article><article class="concept-card"><strong>Nesting: 2 o 3 niveles</strong><p>Más profundidad suele indicar que el componente está demasiado acoplado al HTML.</p></article></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+<section class="lesson" id="sass-03" data-lesson="sass-03">
+  <div class="lesson__meta">Módulo 03 · Modularidad</div>
+  <h2>Partials, <code>@use</code> y una base mantenible</h2>
+  <p>Dividí los estilos por responsabilidad y componelos desde un único entry point. Preferí <code>@use</code> sobre el antiguo <code>@import</code>: evita fugas globales y hace explícitas las dependencias.</p>
+  <div class="code-block"><div class="code-block__header"><span>estructura recomendada</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>sass/
+├── base/
+│   ├── _variables.scss
+│   ├── _mixins.scss
+│   └── _reset.scss
+├── components/
+│   ├── _buttons.scss
+│   └── _cards.scss
+├── layout/
+│   ├── _header.scss
+│   └── _main.scss
+└── styles.scss</code></pre></div>
+  <div class="code-block"><div class="code-block__header"><span>styles.scss</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>@use 'base/reset';
+@use 'layout/header';
+@use 'layout/main';
+@use 'components/buttons';</code></pre></div>
+  <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint</span><p>¿Qué estrategia reduce mejor el acoplamiento?</p><div class="quiz-options"><button class="quiz-option" data-answer="true">Separar responsabilidades y componer con @use</button><button class="quiz-option" data-answer="false">Guardar todo el proyecto en un único SCSS de miles de líneas</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+<section class="lesson" id="sass-04" data-lesson="sass-04">
+  <div class="lesson__meta">Módulo 04 · Reutilización</div>
+  <h2>Mixins, funciones y cuándo usarlos</h2>
+  <p>Un mixin es útil cuando reutilizás un patrón de declaraciones. Una función es mejor cuando necesitás calcular y devolver un valor. No abstraigas algo que sólo usás una vez.</p>
+  <div class="code-block"><div class="code-block__header"><span>_mixins.scss</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>@mixin focus-ring($color) {
+  outline: 3px solid rgba($color, .35);
+  outline-offset: 3px;
+}
+
+.button:focus-visible {
+  @include focus-ring(#3178c6);
+}</code></pre></div>
+  <div class="code-block"><div class="code-block__header"><span>función</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>@function rem($px) {
+  @return calc($px / 16) * 1rem;
+}
+
+.title { font-size: rem(32); }</code></pre></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+<section class="lesson" id="sass-05" data-lesson="sass-05">
+  <div class="lesson__meta">Módulo 05 · Responsive</div>
+  <h2>Mobile first y breakpoints con intención</h2>
+  <p>Empezá por el layout mínimo y agregá complejidad con <code>min-width</code>. Los breakpoints deberían responder al contenido, no a una lista arbitraria de dispositivos.</p>
+  <div class="code-block"><div class="code-block__header"><span>mobile-first.scss</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>.cards {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 48rem) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 64rem) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}</code></pre></div>
+  <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint</span><p>En mobile first, ¿qué suele contener la regla base?</p><div class="quiz-options"><button class="quiz-option" data-answer="false">La versión desktop completa</button><button class="quiz-option" data-answer="true">La experiencia mínima para pantallas pequeñas</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+<section class="lesson" id="sass-06" data-lesson="sass-06">
+  <div class="lesson__meta">Módulo 06 · Arquitectura</div>
+  <h2>Cómo escalar sin crear un laberinto</h2>
+  <p>Una arquitectura profesional separa design tokens, base, layout y componentes. BEM u otra convención consistente ayuda a mantener selectores predecibles. La meta no es tener muchas carpetas: es encontrar rápido dónde vive cada responsabilidad.</p>
+  <div class="lesson-grid">
+    <article class="concept-card"><strong>Base</strong><p>Reset, tipografía y reglas globales inevitables.</p></article>
+    <article class="concept-card"><strong>Layout</strong><p>Estructuras de página: header, shell, grids, footer.</p></article>
+    <article class="concept-card"><strong>Components</strong><p>Botones, cards, formularios y piezas reutilizables.</p></article>
+    <article class="concept-card"><strong>Tokens</strong><p>Colores, espacios, radios, sombras y breakpoints.</p></article>
+  </div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+<section class="lesson" id="sass-07" data-lesson="sass-07">
+  <div class="lesson__meta">Módulo 07 · Producción</div>
+  <h2>Build, watch y calidad de salida</h2>
+  <p>En desarrollo conviene compilar en modo watch. Para producción generá CSS comprimido, sin source map si no lo necesitás, y verificá que el HTML sólo dependa del archivo compilado.</p>
+  <div class="code-block"><div class="code-block__header"><span>package.json</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>{
+  "scripts": {
+    "styles": "sass sass/styles.scss assets/css/styles.css --style=compressed",
+    "styles:watch": "sass sass/styles.scss assets/css/styles.css --watch"
+  }
+}</code></pre></div>
+  <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint final</span><p>¿Qué archivo debería referenciar el navegador en producción?</p><div class="quiz-options"><button class="quiz-option" data-answer="false">sass/styles.scss</button><button class="quiz-option" data-answer="true">assets/css/styles.css</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+<section class="course-finish">
+  <h2>Ya tenés la ruta completa de SASS</h2>
+  <p>Volvé al laboratorio para reconocer estas decisiones en el código real del proyecto o seguí con TypeScript para completar el stack.</p>
+  <div class="course-actions"><a class="course-action" href="./learn-typescript.html">Continuar con TypeScript</a><a class="course-action course-action--secondary" href="./index.html">Volver al laboratorio</a></div>
+</section>
+</div>
+</div>
+</main>
+<footer class="learning-footer"><div class="learning-shell learning-footer__inner"><span>TypeScript Lab · Ruta SASS</span><span>Aprender haciendo, no sólo leyendo.</span></div></footer>
+<script src="assets/js/tutorial.js" defer></script>
+</body>
+</html>
