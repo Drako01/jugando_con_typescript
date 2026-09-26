@@ -191,7 +191,12 @@ export function listarEnTabla<T extends object>(key: StorageKey, containerElemen
     const data = readArray<T>(key);
 
     if (data.length === 0) {
-        containerElement.innerHTML = `<div class="data-panel__header"><h2>${key}</h2><span>0 registros</span></div><p>Todavía no hay datos disponibles.</p>`;
+        containerElement.innerHTML = `
+            <div class="data-panel__header"><h2>${key}</h2><span>0 registros</span></div>
+            <div class="platform-empty-state">
+                <strong>Todavía no hay registros.</strong>
+                <span>Usá los formularios del laboratorio o cargá el escenario demo para ver cómo TypeScript renderiza esta colección.</span>
+            </div>`;
         return;
     }
 
@@ -201,14 +206,14 @@ export function listarEnTabla<T extends object>(key: StorageKey, containerElemen
             .filter(([keyName]) => keyName !== "role" && !(key === "Cursos" && keyName === "alumnos"))
             .map(([keyName, value], valueIndex) => formatCell(key, keyName, value, index, valueIndex, containerElement.id))
             .join("");
-        return `<tr>${cells}</tr>`;
+        return `<tr>${cells}<td class="table-actions"><button type="button" class="table-action table-action--danger" onclick="eliminarRegistro('${key}', ${index})">Eliminar</button></td></tr>`;
     }).join("");
 
     containerElement.innerHTML = `
         <div class="data-panel__header"><h2>${key}</h2><span>${data.length} ${data.length === 1 ? "registro" : "registros"}</span></div>
         <div class="table-scroll" role="region" aria-label="Tabla de ${key}" tabindex="0">
             <table class="data-table">
-                <thead><tr>${keys.map(keyName => `<th scope="col">${escapeHtml(keyName)}</th>`).join("")}</tr></thead>
+                <thead><tr>${keys.map(keyName => `<th scope="col">${escapeHtml(keyName)}</th>`).join("")}<th scope="col">Acciones</th></tr></thead>
                 <tbody>${rows}</tbody>
             </table>
         </div>`;
@@ -232,4 +237,57 @@ export function listarEnTabla<T extends object>(key: StorageKey, containerElemen
     item[keyToUpdate] = nuevoEstado;
     writeArray(key, data);
     listarEnTabla(key, containerElement);
+};
+
+
+(window as typeof window & { eliminarRegistro?: Function }).eliminarRegistro = function eliminarRegistro(
+    key: StorageKey,
+    itemIndex: number
+): void {
+    const data = readArray<Record<string, unknown>>(key);
+    const removed = data[itemIndex];
+    if (!removed) return;
+
+    const next = data.filter((_, index) => index !== itemIndex);
+    writeArray(key, next);
+
+    if (key === "Alumnos") {
+        actualizarCantidadAlumnosPorCurso();
+    }
+
+    if (key === "Cursos") {
+        const commission = String(removed.comision ?? "");
+        const alumnos = readArray<Alumno>("Alumnos").map(alumno => ({
+            ...alumno,
+            cursos: (alumno.cursos || []).filter(item => String(item) !== commission)
+        }));
+        const profesores = readArray<Profesor>("Profesores").map(profesor => ({
+            ...profesor,
+            cursos: (profesor.cursos || []).filter(curso => String(curso.comision) !== commission)
+        }));
+        writeArray("Alumnos", alumnos);
+        writeArray("Profesores", profesores);
+    }
+
+    if (key === "Profesores") {
+        const professorId = Number(removed.id);
+        const cursos = readArray<Curso>("Cursos").map(curso => ({
+            ...curso,
+            profesores: (curso.profesores || []).filter(profesor => profesor.id !== professorId)
+        }));
+        writeArray("Cursos", cursos);
+    }
+
+    if (key === "Categorias") {
+        const categoryId = Number(removed.id);
+        const cursos = readArray<Curso>("Cursos").map(curso => ({
+            ...curso,
+            categoria: curso.categoria?.id === categoryId ? undefined : curso.categoria
+        }));
+        writeArray("Cursos", cursos);
+    }
+
+    document.dispatchEvent(new CustomEvent("ats:lab-data-changed", {
+        detail: { key, action: "delete" }
+    }));
 };

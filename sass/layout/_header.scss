@@ -23,7 +23,16 @@
 .site-nav a:hover { color: $color-text; }
 
 @include mobile {
-  .site-header__inner { min-height: 66px; }
-  .site-nav a:not(:last-child) { display: none; }
+  .site-header__inner { min-height: 66px; gap: 12px; }
   .brand small { display: none; }
+  .site-nav {
+    max-width: 58vw;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+    font-size: .75rem;
+  }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav a { flex: 0 0 auto; padding: 6px 8px; border: 1px solid $color-border; border-radius: 999px; }
 }

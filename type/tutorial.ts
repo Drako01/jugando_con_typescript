@@ -56,6 +56,7 @@ if (course) {
       progress.has(id) ? progress.delete(id) : progress.add(id);
       localStorage.setItem(storageKey, JSON.stringify([...progress]));
       renderProgress();
+      document.dispatchEvent(new CustomEvent('ats:learning-progress'));
     });
   });
 
