@@ -135,8 +135,9 @@ function initCursoForm(): void {
             String(generarComision(cursos))
         );
 
-        profesor.dictarCurso(curso);
-        cursos.push({ ...curso, profesores: curso.profesores.map(item => ({ ...item, cursos: [] })) } as Curso);
+        // El constructor de Curso ya asocia al profesor. Persistimos la instancia
+        // directamente: JSON.stringify omite los métodos y evita duplicar la relación.
+        cursos.push(curso);
         localStorage.setItem('Cursos', JSON.stringify(cursos));
 
         const profesoresActualizados = profesores.map(item => item.id === profesor.id

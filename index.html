@@ -13,17 +13,17 @@
 <body>
     <header class="site-header">
         <div class="shell site-header__inner">
-            <a class="brand" href="#inicio" aria-label="Ir al inicio">
-                <span class="brand__mark">TS</span>
+            <a class="brand brand--ats" href="#inicio" aria-label="ArmoTuSitio.com Lab - ir al inicio">
+                <img class="brand__logo" src="./assets/img/armotusitio-logo.svg" alt="" width="42" height="42">
                 <span>
-                    <strong>TypeScript Lab</strong>
+                    <strong>ArmoTuSitio.com Lab</strong>
                     <small>TypeScript + SASS</small>
                 </span>
             </a>
             <nav class="site-nav" aria-label="Navegación principal">
-                <a href="#formularios">Carga de datos</a>
-                <a href="#resultados">Resultados</a>
-                <a href="./README.md">Tutorial</a>
+                <a href="#inicio">Inicio</a>
+                <a href="#formularios">Laboratorio</a>
+                <a href="#campus">Campus</a>
             </nav>
         </div>
     </header>
@@ -40,7 +40,8 @@
                     </p>
                     <div class="hero__actions">
                         <a class="button button--primary" href="#formularios">Comenzar laboratorio</a>
-                        <a class="button button--secondary" href="./docs/08-sass-profesional.md">Aprender SASS</a>
+                        <a class="button button--secondary" href="./learn-sass.html">Aprender SASS</a>
+                        <a class="button button--secondary" href="./learn-typescript.html">Aprender TypeScript</a>
                     </div>
                 </div>
                 <aside class="learning-card" aria-label="Tecnologías utilizadas">
@@ -69,6 +70,37 @@
                     <li><span>03</span><strong>Curso</strong><small>Relaciona categoría y profesor.</small></li>
                     <li><span>04</span><strong>Alumno</strong><small>Inscribe a uno o más cursos.</small></li>
                 </ol>
+            </div>
+        </section>
+
+
+        <section id="campus" class="learning-paths" aria-labelledby="learning-paths-title">
+            <div class="shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Campus interactivo</span>
+                    <h2 id="learning-paths-title">Dos rutas para entender el proyecto de verdad</h2>
+                    <p>No son apuntes estáticos: avanzá módulo por módulo, probá checkpoints y guardá tu progreso en el navegador.</p>
+                </div>
+                <div class="learning-path-grid">
+                    <a class="path-card path-card--typescript" href="./learn-typescript.html">
+                        <span class="path-card__code">TS</span>
+                        <div>
+                            <span class="path-card__eyebrow">7 módulos · progresivo</span>
+                            <h3>Aprender TypeScript</h3>
+                            <p>Tipos, contratos, funciones, narrowing, genéricos, DOM y arquitectura aplicados al laboratorio real.</p>
+                            <strong>Empezar ruta <span aria-hidden="true">→</span></strong>
+                        </div>
+                    </a>
+                    <a class="path-card path-card--sass" href="./learn-sass.html">
+                        <span class="path-card__code">SCSS</span>
+                        <div>
+                            <span class="path-card__eyebrow">7 módulos · práctico</span>
+                            <h3>Aprender SASS</h3>
+                            <p>Variables, nesting, módulos, mixins, responsive, arquitectura y build con ejemplos que podés copiar.</p>
+                            <strong>Empezar ruta <span aria-hidden="true">→</span></strong>
+                        </div>
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -166,6 +198,7 @@
     <footer id="footer" class="site-footer">
         <div class="shell site-footer__content">
             <p>Laboratorio educativo · TypeScript + SASS</p>
+            <p>Desarrollado por <a href="https://armotusitio.com.ar/" target="_blank" rel="noopener noreferrer">ArmoTuSitio.com</a></p>
         </div>
     </footer>
     <script type="module" src="assets/js/index.js"></script>

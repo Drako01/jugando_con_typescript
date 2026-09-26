@@ -956,3 +956,15 @@ Ver [LICENCE](LICENCE).
 **[Alejandro Di Stefano](https://github.com/Drako01)**
 
 Repositorio creado y mantenido como material práctico, educativo y de referencia sobre **TypeScript, SASS y desarrollo frontend moderno**.
+
+
+## Campus interactivo
+
+La experiencia publicada incluye dos rutas web de aprendizaje, además de la documentación Markdown:
+
+- `learn-typescript.html`: tutorial progresivo de TypeScript con ejemplos, checkpoints y progreso persistente.
+- `learn-sass.html`: tutorial progresivo de SASS con arquitectura, responsive, mixins y build.
+- El progreso se guarda en `localStorage` y no requiere backend.
+- Los documentos de `docs/` siguen funcionando como material de referencia ampliado.
+
+El botón **Aprender SASS** ya no navega al Markdown crudo: abre la experiencia interactiva.
