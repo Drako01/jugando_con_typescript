@@ -355,6 +355,13 @@ function initFooter(): void {
     content.appendChild(author);
 }
 
+function initLabEvents(): void {
+    document.addEventListener('ats:lab-data-changed', () => {
+        refreshLab();
+        showToast('Registro eliminado y relaciones actualizadas.', 'success');
+    });
+}
+
 function init(): void {
     refreshLab();
     initCategoriaForm();
@@ -362,6 +369,7 @@ function init(): void {
     initCursoForm();
     initAlumnoForm();
     initLabTools();
+    initLabEvents();
     initFooter();
 }
 
