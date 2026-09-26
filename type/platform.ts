@@ -253,6 +253,34 @@ const initSearch = (): void => {
   });
 };
 
+
+const renderCourseRoadmap = (): void => {
+  const course = getCourse(document.body.dataset.course);
+  const sidebar = document.querySelector<HTMLElement>(".lesson-sidebar");
+  if (!course || !sidebar) return;
+
+  const existing = sidebar.querySelector(".course-roadmap");
+  existing?.remove();
+
+  const completed = new Set(readStringArray(storageKeys[course.id]));
+  const levels = ["Fundamentos", "Intermedio", "Avanzado", "Profesional"] as const;
+
+  const roadmap = document.createElement("div");
+  roadmap.className = "course-roadmap";
+  roadmap.innerHTML = levels.map((level) => {
+    const lessons = course.lessons.filter((lesson) => lesson.level === level);
+    const done = lessons.filter((lesson) => completed.has(lesson.id)).length;
+    const first = lessons[0];
+    return `<a href="#${first?.id ?? ""}">
+      <span>${level}</span>
+      <strong>${done}/${lessons.length}</strong>
+    </a>`;
+  }).join("");
+
+  const title = sidebar.querySelector(".lesson-sidebar__title");
+  title?.insertAdjacentElement("afterend", roadmap);
+};
+
 const initCourseSidebarSearch = (): void => {
   const sidebar = document.querySelector<HTMLElement>(".lesson-sidebar");
   const nav = sidebar?.querySelector<HTMLElement>(".lesson-nav");
@@ -283,13 +311,17 @@ const renderDashboard = (): void => {
 
 const initPlatform = (): void => {
   renderDashboard();
+  renderCourseRoadmap();
   injectLessonEnhancements();
   trackLastLesson();
   initSearch();
   initCourseSidebarSearch();
 
   window.addEventListener("storage", () => renderDashboard());
-  document.addEventListener("ats:learning-progress", () => renderDashboard());
+  document.addEventListener("ats:learning-progress", () => {
+    renderDashboard();
+    renderCourseRoadmap();
+  });
 };
 
 document.addEventListener("DOMContentLoaded", initPlatform);
