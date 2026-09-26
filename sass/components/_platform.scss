@@ -507,3 +507,18 @@ a.search-result:hover,
 @include mobile {
   .course-roadmap { grid-template-columns: 1fr 1fr; }
 }
+
+
+.capstone-card {
+  margin: 42px 0 0;
+  padding: 26px;
+  border: 1px solid color-mix(in srgb, var(--course) 34%, rgba(148,163,184,.18));
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--course) 10%, transparent), transparent 42%),
+    rgba(255,255,255,.018);
+
+  h2 { margin: 0 0 10px; font-size: clamp(1.6rem, 3vw, 2.25rem); }
+  > p { max-width: 760px; color: #b5c0d2; }
+  ol { display: grid; gap: 8px; padding-left: 20px; margin: 18px 0 22px; color: $color-muted; font-size: .84rem; }
+}
