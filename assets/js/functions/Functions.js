@@ -1,0 +1,228 @@
+import { Curso } from "../models/Curso.js";
+function readArray(key) {
+    const raw = localStorage.getItem(key);
+    if (!raw)
+        return [];
+    try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+    }
+    catch (error) {
+        console.error(`No se pudo leer ${key} desde localStorage:`, error);
+        return [];
+    }
+}
+function writeArray(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+export function agregarAlLocalStorage(key, value) {
+    const data = readArray(key);
+    const exists = data.some(item => item.nombre?.toLowerCase() === value.nombre.toLowerCase());
+    if (exists) {
+        console.info(`El elemento "${value.nombre}" ya existe en ${key}.`);
+        return;
+    }
+    const formattedValue = {
+        ...value,
+        nacimiento: value.nacimiento instanceof Date ? value.nacimiento.toISOString().split("T")[0] : value.nacimiento,
+        registro: value.registro instanceof Date ? value.registro.toISOString().split("T")[0] : value.registro
+    };
+    writeArray(key, [...data, formattedValue]);
+}
+export function cargarCategoriasDesdeLS() {
+    const categorias = readArray("Categorias");
+    const select = document.getElementById("categoriaCurso");
+    if (!select)
+        return;
+    select.innerHTML = categorias.length ? "" : '<option value="" disabled selected>Creá una categoría primero</option>';
+    categorias.forEach(categoria => {
+        const option = document.createElement("option");
+        option.value = categoria.categoria;
+        option.textContent = categoria.categoria;
+        select.appendChild(option);
+    });
+}
+export function cargarCursosDesdeLS() {
+    const cursos = readArray("Cursos");
+    const select = document.getElementById("cursosAlumno");
+    if (!select)
+        return;
+    select.innerHTML = '<option value="" disabled>Seleccione 1 o más cursos</option>';
+    cursos.forEach(curso => {
+        const option = document.createElement("option");
+        option.value = String(curso.comision);
+        option.textContent = `${curso.nombre} · Comisión ${curso.comision}`;
+        select.appendChild(option);
+    });
+}
+export function cargarProfesoresDesdeLS() {
+    const profesores = readArray("Profesores").filter(profesor => profesor.estado === true);
+    const select = document.getElementById("profesorCurso");
+    if (!select)
+        return;
+    select.innerHTML = '<option value="">Seleccioná un profesor</option>';
+    profesores.forEach(profesor => {
+        const option = document.createElement("option");
+        option.value = String(profesor.id);
+        option.textContent = `${profesor.nombre} ${profesor.apellido}`;
+        select.appendChild(option);
+    });
+}
+export function actualizarCantidadAlumnosPorCurso() {
+    const alumnos = readArray("Alumnos");
+    const cursos = readArray("Cursos").map(curso => new Curso(curso.id, curso.nombre, curso.inicio, curso.finalizacion, curso.estado, 0, curso.categoria, curso.profesores?.[0], curso.comision));
+    cursos.forEach(curso => { curso.alumnos = []; });
+    alumnos.forEach(alumno => {
+        alumno.cursos.forEach(comision => {
+            const curso = cursos.find(item => String(item.comision) === String(comision));
+            if (curso)
+                curso.agregarAlumno(alumno);
+        });
+    });
+    writeArray("Cursos", cursos);
+}
+export function cargarCursosLS() {
+    return readArray("Cursos").map(curso => new Curso(curso.id, curso.nombre, curso.inicio, curso.finalizacion, curso.estado, curso.cantidadAlumnos, curso.categoria, curso.profesores?.[0], curso.comision));
+}
+export function actualizarCursosConAlumnos(cursosSeleccionados) {
+    const cursos = readArray("Cursos");
+    cursosSeleccionados.forEach(comision => {
+        const curso = cursos.find(item => String(item.comision) === String(comision));
+        if (curso)
+            curso.cantidadAlumnos = (curso.cantidadAlumnos || 0) + 1;
+    });
+    writeArray("Cursos", cursos);
+}
+export function generarMatricula(nombre, apellido, alumnos) {
+    const initials = `${nombre.charAt(0)}${apellido.charAt(0)}`.toUpperCase();
+    let matricula;
+    do {
+        const random = String(Math.floor(Math.random() * 1000)).padStart(3, "0");
+        matricula = `${initials}${random}`;
+    } while (alumnos.some(alumno => alumno.matricula === matricula));
+    return matricula;
+}
+export function generarComision(cursos) {
+    const existing = new Set(cursos.map(curso => Number(curso.comision)));
+    let comision;
+    do {
+        comision = Math.floor(Math.random() * 9000) + 1000;
+    } while (existing.has(comision));
+    return comision;
+}
+function formatCell(key, keyName, value, index, valueIndex, containerId) {
+    if (typeof value === "boolean") {
+        const stateClass = value ? "status--active" : "status--inactive";
+        const stateLabel = value ? "Activo" : "Inactivo";
+        return `<td><input type="checkbox" ${value ? "checked" : ""} aria-label="Cambiar estado" onchange="actualizarEstado('${key}', ${index}, ${valueIndex}, this.checked, document.getElementById('${containerId}'))"><span class="status ${stateClass}">${stateLabel}</span></td>`;
+    }
+    if (Array.isArray(value)) {
+        const text = value.map(item => {
+            if (typeof item === "object" && item !== null && "nombre" in item) {
+                const record = item;
+                return record.comision ?? `${record.nombre ?? ""} ${record.apellido ?? ""}`.trim();
+            }
+            return item;
+        }).join(", ");
+        return `<td>${escapeHtml(text || "—")}</td>`;
+    }
+    if (typeof value === "object" && value !== null) {
+        const record = value;
+        return `<td>${escapeHtml(record.comision ?? record.categoria ?? "—")}</td>`;
+    }
+    const className = key === "Categorias" && keyName === "categoria" ? ' class="td-categoria"' : "";
+    return `<td${className}>${escapeHtml(value === "" ? "—" : value)}</td>`;
+}
+export function listarEnTabla(key, containerElement) {
+    const data = readArray(key);
+    if (data.length === 0) {
+        containerElement.innerHTML = `
+            <div class="data-panel__header"><h2>${key}</h2><span>0 registros</span></div>
+            <div class="platform-empty-state">
+                <strong>Todavía no hay registros.</strong>
+                <span>Usá los formularios del laboratorio o cargá el escenario demo para ver cómo TypeScript renderiza esta colección.</span>
+            </div>`;
+        return;
+    }
+    const keys = Object.keys(data[0]).filter(keyName => keyName !== "role" && !(key === "Cursos" && keyName === "alumnos"));
+    const rows = data.map((item, index) => {
+        const cells = Object.entries(item)
+            .filter(([keyName]) => keyName !== "role" && !(key === "Cursos" && keyName === "alumnos"))
+            .map(([keyName, value], valueIndex) => formatCell(key, keyName, value, index, valueIndex, containerElement.id))
+            .join("");
+        return `<tr>${cells}<td class="table-actions"><button type="button" class="table-action table-action--danger" onclick="eliminarRegistro('${key}', ${index})">Eliminar</button></td></tr>`;
+    }).join("");
+    containerElement.innerHTML = `
+        <div class="data-panel__header"><h2>${key}</h2><span>${data.length} ${data.length === 1 ? "registro" : "registros"}</span></div>
+        <div class="table-scroll" role="region" aria-label="Tabla de ${key}" tabindex="0">
+            <table class="data-table">
+                <thead><tr>${keys.map(keyName => `<th scope="col">${escapeHtml(keyName)}</th>`).join("")}<th scope="col">Acciones</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>`;
+}
+window.actualizarEstado = function actualizarEstado(key, itemIndex, valueIndex, nuevoEstado, containerElement) {
+    const data = readArray(key);
+    const item = data[itemIndex];
+    if (!item || !containerElement)
+        return;
+    const keys = Object.keys(item).filter(keyName => keyName !== "role");
+    const keyToUpdate = keys[valueIndex];
+    if (!keyToUpdate)
+        return;
+    item[keyToUpdate] = nuevoEstado;
+    writeArray(key, data);
+    listarEnTabla(key, containerElement);
+};
+window.eliminarRegistro = function eliminarRegistro(key, itemIndex) {
+    const data = readArray(key);
+    const removed = data[itemIndex];
+    if (!removed)
+        return;
+    const next = data.filter((_, index) => index !== itemIndex);
+    writeArray(key, next);
+    if (key === "Alumnos") {
+        actualizarCantidadAlumnosPorCurso();
+    }
+    if (key === "Cursos") {
+        const commission = String(removed.comision ?? "");
+        const alumnos = readArray("Alumnos").map(alumno => ({
+            ...alumno,
+            cursos: (alumno.cursos || []).filter(item => String(item) !== commission)
+        }));
+        const profesores = readArray("Profesores").map(profesor => ({
+            ...profesor,
+            cursos: (profesor.cursos || []).filter(curso => String(curso.comision) !== commission)
+        }));
+        writeArray("Alumnos", alumnos);
+        writeArray("Profesores", profesores);
+    }
+    if (key === "Profesores") {
+        const professorId = Number(removed.id);
+        const cursos = readArray("Cursos").map(curso => ({
+            ...curso,
+            profesores: (curso.profesores || []).filter(profesor => profesor.id !== professorId)
+        }));
+        writeArray("Cursos", cursos);
+    }
+    if (key === "Categorias") {
+        const categoryId = Number(removed.id);
+        const cursos = readArray("Cursos").map(curso => ({
+            ...curso,
+            categoria: curso.categoria?.id === categoryId ? undefined : curso.categoria
+        }));
+        writeArray("Cursos", cursos);
+    }
+    document.dispatchEvent(new CustomEvent("ats:lab-data-changed", {
+        detail: { key, action: "delete" }
+    }));
+};
+//# sourceMappingURL=Functions.js.map
