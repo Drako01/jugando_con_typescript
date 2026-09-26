@@ -53,6 +53,11 @@
     <a href="#sass-05" data-lesson-link="sass-05"><span>05</span>Responsive</a>
     <a href="#sass-06" data-lesson-link="sass-06"><span>06</span>Arquitectura</a>
     <a href="#sass-07" data-lesson-link="sass-07"><span>07</span>Build profesional</a>
+    <a href="#sass-08" data-lesson-link="sass-08"><span>08</span>Maps y loops</a>
+    <a href="#sass-09" data-lesson-link="sass-09"><span>09</span>Design tokens</a>
+    <a href="#sass-10" data-lesson-link="sass-10"><span>10</span>Custom Properties</a>
+    <a href="#sass-11" data-lesson-link="sass-11"><span>11</span>Accesibilidad</a>
+    <a href="#sass-12" data-lesson-link="sass-12"><span>12</span>Performance</a>
   </nav>
 </aside>
 
@@ -182,6 +187,74 @@ $radius: .75rem;
   }
 }</code></pre></div>
   <div class="checkpoint" data-quiz><span class="checkpoint__label">Checkpoint final</span><p>¿Qué archivo debería referenciar el navegador en producción?</p><div class="quiz-options"><button class="quiz-option" data-answer="false">sass/styles.scss</button><button class="quiz-option" data-answer="true">assets/css/styles.css</button></div><p class="quiz-feedback" data-feedback></p></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+
+
+<section class="lesson" id="sass-08" data-lesson="sass-08">
+  <div class="lesson__meta">Módulo 08 · Colecciones</div>
+  <h2>Maps, listas y loops con una razón real</h2>
+  <p>Los maps agrupan tokens relacionados y los loops generan patrones repetibles. Usalos cuando reduzcan duplicación real, no para convertir SCSS en una capa difícil de leer.</p>
+  <div class="code-block"><div class="code-block__header"><span>spaces.scss</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>$spaces: (
+  xs: .25rem,
+  sm: .5rem,
+  md: 1rem,
+  lg: 2rem
+);
+
+@each $name, $value in $spaces {
+  .gap-#{$name} { gap: $value; }
+}</code></pre></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="sass-09" data-lesson="sass-09">
+  <div class="lesson__meta">Módulo 09 · Sistema visual</div>
+  <h2>Design tokens y decisiones centralizadas</h2>
+  <p>Un token representa una decisión reusable: color principal, radios, sombras, espacios o breakpoints. La meta es tener una fuente de verdad clara para el sistema visual.</p>
+  <div class="code-block"><div class="code-block__header"><span>_tokens.scss</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>$color-primary: #3178c6;
+$radius-card: 1rem;
+$space-section: 4rem;
+$shadow-card: 0 24px 60px rgba(0,0,0,.22);</code></pre></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="sass-10" data-lesson="sass-10">
+  <div class="lesson__meta">Módulo 10 · Runtime</div>
+  <h2>SASS y CSS Custom Properties trabajan juntos</h2>
+  <p>Las variables SASS existen en build time. Las Custom Properties viven en runtime. En sistemas modernos es normal combinar ambas: SASS para arquitectura y CSS variables para theming y valores dinámicos.</p>
+  <div class="code-block"><div class="code-block__header"><span>tokens híbridos</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>$primary: #3178c6;
+
+:root {
+  --primary: #{$primary};
+}
+
+[data-theme="light"] {
+  --surface: #fff;
+}
+
+.button { background: var(--primary); }</code></pre></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="sass-11" data-lesson="sass-11">
+  <div class="lesson__meta">Módulo 11 · Accesibilidad</div>
+  <h2>Focus, contraste y movimiento responsable</h2>
+  <p>Los estilos también determinan accesibilidad. No elimines el foco visible sin reemplazo, no dependas sólo del color para comunicar estados y respetá <code>prefers-reduced-motion</code>.</p>
+  <div class="code-block"><div class="code-block__header"><span>a11y.scss</span><button class="copy-code" data-copy>Copiar</button></div><pre><code>:focus-visible {
+  outline: 3px solid rgba(#60a5fa, .65);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: .01ms !important;
+  }
+}</code></pre></div>
+  <button class="lesson-complete" data-complete>Marcar como completado</button>
+</section>
+<section class="lesson" id="sass-12" data-lesson="sass-12">
+  <div class="lesson__meta">Módulo 12 · Producción</div>
+  <h2>Performance, especificidad y CSS que envejece bien</h2>
+  <p>SASS puede producir CSS excelente o una salida inflada. Revisá el CSS compilado, mantené nesting corto, evitá selectores innecesariamente específicos y validá la compilación en CI.</p>
+  <div class="lesson-grid"><article class="concept-card"><strong>Nesting corto</strong><p>Reduce especificidad accidental.</p></article><article class="concept-card"><strong>Arquitectura proporcional</strong><p>No sobrearquitectures proyectos chicos.</p></article><article class="concept-card"><strong>CSS final</strong><p>Es el artefacto real enviado al navegador.</p></article><article class="concept-card"><strong>Build reproducible</strong><p>SCSS y CSS deben mantenerse coherentes.</p></article></div>
   <button class="lesson-complete" data-complete>Marcar como completado</button>
 </section>
 
